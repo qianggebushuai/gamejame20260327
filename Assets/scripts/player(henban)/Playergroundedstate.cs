@@ -28,23 +28,23 @@ public class Playergroundedstate : Playerstate
     }
     public void keycontrol()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            statemachine.changestate(player.aimsword);
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse1))
+        //{
+            //statemachine.changestate(player.aimsword);
+        //}
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            statemachine.changestate(player.counterattack);
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && player.isgrounddetected())
-        {
-            statemachine.changestate(player.primaryattack);
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            statemachine.changestate(player.summonstate);
-        }
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+            //statemachine.changestate(player.counterattack);
+        //}
+        //if (Input.GetKeyDown(KeyCode.Mouse0) && player.isgrounddetected())
+        //{
+           // statemachine.changestate(player.primaryattack);
+        //}
+        //if (Input.GetKeyDown(KeyCode.F))
+       // {
+           // statemachine.changestate(player.summonstate);
+        //}
 
 
         if (Input.GetKeyDown(KeyCode.Space) && player.isgrounddetected())

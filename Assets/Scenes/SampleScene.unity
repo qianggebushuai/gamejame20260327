@@ -526,7 +526,7 @@ Transform:
   m_GameObject: {fileID: 99203520}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.48, y: -0.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3167,8 +3167,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
+  m_Offset: {x: 0.016008645, y: 0}
+  m_Size: {x: 0.5320173, y: 1}
   m_Direction: 0
 --- !u!50 &1188311003
 Rigidbody2D:
@@ -3193,7 +3193,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 2
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
@@ -3241,7 +3241,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 704
   wallCheck: {fileID: 99203521}
-  wallCheckDistance: 0.9
+  wallCheckDistance: 0.1
   knockbackdirection: {x: 2, y: 0}
   knockbackduration: 0.07
   isknocked: 0
@@ -3264,6 +3264,10 @@ MonoBehaviour:
   wallDashDuration: 0.25
   wallDashSpeedH: 30
   wallDashSpeedV: 30
+  playerLayer: 0
+  ctl: {fileID: 1150006268}
+  groupALayer: 0
+  groupBLayer: 0
   wallBounceSpeedH: 30
   wallBounceSpeedV: 30
   cancontrol: 1

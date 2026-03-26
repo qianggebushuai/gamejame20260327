@@ -34,6 +34,11 @@ public class Player1 : entity
     public float wallDashDuration = 0.2f;   // 墙壁冲刺持续时间
     public float wallDashSpeedH = 15f;      // 墙壁冲刺水平速度
     public float wallDashSpeedV = 12f;      // 墙壁冲刺垂直速度
+    public int playerLayer;
+    [Header("layermaskchange")] 
+    public ScreenCoverTransition2D ctl;
+    public int groupALayer;
+    public int groupBLayer;
     [Header("Wall Bounce Settings - 墙壁反弹")]
     public float wallBounceSpeedH = 10f;   
     public float wallBounceSpeedV = 12f;
@@ -87,15 +92,30 @@ public class Player1 : entity
     protected override void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        playerLayer = LayerMask.NameToLayer("Player");
+        groupALayer = LayerMask.NameToLayer("SPRING");
+        groupBLayer = LayerMask.NameToLayer("WINTER");
         base.Start();
 
         statemachine.Initialized(idlestate);
     }
     protected override void Update()
     {
+        if (ctl.IsUpdating()) return;
+        if (ctl.IsOverlap() == 0)
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, groupALayer, false);
+            Physics2D.IgnoreLayerCollision(playerLayer, groupBLayer, true);
+        }
+        else
+        {
+            Physics2D.IgnoreLayerCollision(playerLayer, groupALayer, true);
+            Physics2D.IgnoreLayerCollision(playerLayer, groupBLayer, false);
+        }
         base.Update();
         checkfordash();
         quickfall();
+
         statemachine.currentstate.Update();
 
     }

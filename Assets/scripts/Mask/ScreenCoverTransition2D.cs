@@ -55,7 +55,6 @@ public class ScreenCoverTransition2D : MonoBehaviour
     private Vector3 mode2CurrentPos;
     private float mode2CoverScale;
 
-    // ∏ﬂ¡¡œ‡πÿ
     private List<LineRenderer> outlineRenderers = new List<LineRenderer>();
     private Mode pendingMode = Mode.None;
 

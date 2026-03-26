@@ -1,33 +1,42 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class ScreenCoverTransition2D : MonoBehaviour
 {
     [Header("按键绑定")]
-    [Tooltip("第一种运动模式（旋转缩放）的按键")]
     public KeyCode mode1Key = KeyCode.G;
-    [Tooltip("第二种运动模式（倾斜平移覆盖）的按键")]
     public KeyCode mode2Key = KeyCode.H;
 
+    [Header("高亮预览设置")]
+    [Tooltip("要高亮的目标图层/物体")]
+    public SpriteRenderer[] opentargetLayersToHighlight;
+    public SpriteRenderer[] closetargetLayersToHighlight;
+
+    [Tooltip("高亮持续时间（秒）")]
+    public float highlightDuration = 1.5f;
+    [Tooltip("高亮边缘颜色")]
+    public Color highlightColor = new Color(1f, 0.9f, 0f, 1f);
+    [Tooltip("高亮边缘宽度")]
+    public float highlightWidth = 0.05f;
+    [Tooltip("高亮闪烁速度")]
+    public float highlightBlinkSpeed = 5f;
+
     [Header("模式1 - 旋转缩放模式")]
-    [Tooltip("基础缩放速度倍率，实际速度 = 基础速度 × 当前大小")]
     public float mode1BaseScaleSpeed = 2f;
-    [Tooltip("打开时的旋转速度（度/秒）")]
     public float mode1OpenRotateSpeed = 360f;
-    [Tooltip("关闭时的旋转速度（度/秒）")]
     public float mode1CloseRotateSpeed = 360f;
 
     [Header("模式2 - 倾斜平移覆盖模式")]
-    [Tooltip("倾斜角度（度），建议45度")]
     public float mode2TiltAngle = 45f;
-    [Tooltip("打开时的移动速度（世界单位/秒）")]
     public float mode2OpenMoveSpeed = 10f;
-    [Tooltip("关闭时的移动速度（世界单位/秒）")]
     public float mode2CloseMoveSpeed = 10f;
 
-    private enum State { Idle, Opening, Closing, Covered }
+    private enum State { Idle, Highlighting, Opening, Closing, Covered }
     private enum Mode { None, Mode1, Mode2 }
 
     private State currentState = State.Idle;
+    private State previewState = State.Idle;
     private Mode currentMode = Mode.None;
 
     private SpriteRenderer spriteRenderer;
@@ -45,6 +54,10 @@ public class ScreenCoverTransition2D : MonoBehaviour
     private Vector3 mode2CoverPos;
     private Vector3 mode2CurrentPos;
     private float mode2CoverScale;
+
+    // 高亮相关
+    private List<LineRenderer> outlineRenderers = new List<LineRenderer>();
+    private Mode pendingMode = Mode.None;
 
     void Start()
     {
@@ -64,12 +77,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
             return;
         }
 
-
-        InitMode2Open();
-        InitMode1Close();
-        InitMode2Close();
-        InitMode1Open();
-
+        spriteRenderer.enabled = false;
     }
 
     void CalculateScreenBounds()
@@ -83,7 +91,6 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     void Update()
     {
-        // 处理动画
         if (currentState == State.Opening || currentState == State.Closing)
         {
             switch (currentMode)
@@ -97,7 +104,6 @@ public class ScreenCoverTransition2D : MonoBehaviour
             }
         }
 
-        // 检测按键 - 这个不能漏！
         CheckInput();
     }
 
@@ -116,38 +122,215 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     public void TriggerMode1()
     {
-        if (IsUpdating()) return;
+        if (IsUpdating() || currentState == State.Highlighting) return;
 
         if (currentState == State.Idle)
         {
-            StartOpen(Mode.Mode1);
+            StartHighlightThenOpen(Mode.Mode1);
         }
         else if (currentState == State.Covered)
         {
-            StartClose(Mode.Mode1);
+            StartHighlightThenClose(Mode.Mode1);
         }
     }
 
     public void TriggerMode2()
     {
-        if (IsUpdating()) return;
+        if (IsUpdating() || currentState == State.Highlighting) return;
 
         if (currentState == State.Idle)
         {
-            StartOpen(Mode.Mode2);
+            StartHighlightThenOpen(Mode.Mode2);
         }
         else if (currentState == State.Covered)
         {
-            StartClose(Mode.Mode2);
+            StartHighlightThenClose(Mode.Mode2);
         }
     }
 
+    #region 边缘高亮
+
+    void StartHighlightThenOpen(Mode mode)
+    {
+        pendingMode = mode;
+
+        if (opentargetLayersToHighlight == null || opentargetLayersToHighlight.Length == 0)
+        {
+            StartOpen(mode);
+            return;
+        }
+        currentState = State.Highlighting;
+        StartCoroutine(HighlightCoroutineOpen());
+    }
+    void StartHighlightThenClose(Mode mode)
+    {
+        pendingMode = mode;
+
+        if (opentargetLayersToHighlight == null || opentargetLayersToHighlight.Length == 0)
+        {
+            StartClose(mode);
+            return;
+        }
+        currentState = State.Highlighting;
+        StartCoroutine(HighlightCoroutineClose());
+    }
+    IEnumerator HighlightCoroutineOpen()
+    {
+        CreateOutlineHighlights();
+
+        float elapsed = 0f;
+
+        while (elapsed < highlightDuration)
+        {
+            elapsed += Time.deltaTime;
+            UpdateOutlineBlink();
+            yield return null;
+        }
+
+        ClearHighlights();
+        StartOpen(pendingMode);
+    }
+    IEnumerator HighlightCoroutineClose()
+    {
+        CreateOutlineHighlights();
+
+        float elapsed = 0f;
+
+        while (elapsed < highlightDuration)
+        {
+            elapsed += Time.deltaTime;
+            UpdateOutlineBlink();
+            yield return null;
+        }
+
+        ClearHighlights();
+        StartClose(pendingMode);
+    }
+    void CreateOutlineHighlights()
+    {
+        ClearHighlights();
+        if(previewState == State.Idle)
+        {
+            foreach (SpriteRenderer target in opentargetLayersToHighlight)
+            {
+                if (target == null || target.sprite == null) continue;
+                CreateSpriteOutline(target);
+            }
+        }
+        else
+        {
+            foreach (SpriteRenderer target in closetargetLayersToHighlight)
+            {
+                if (target == null || target.sprite == null) continue;
+                CreateSpriteOutline(target);
+            }
+        }
+
+    }
+
+    void CreateSpriteOutline(SpriteRenderer original)
+    {
+        Vector2[] outlinePoints = GetSpriteOutlinePoints(original);
+
+        if (outlinePoints == null || outlinePoints.Length < 3) return;
+
+        GameObject outlineObj = new GameObject($"Outline_{original.name}");
+        outlineObj.transform.position = Vector3.zero;
+
+        LineRenderer lr = outlineObj.AddComponent<LineRenderer>();
+
+        // 设置 LineRenderer 属性
+        lr.useWorldSpace = true;
+        lr.loop = true;
+        lr.positionCount = outlinePoints.Length;
+        lr.startWidth = highlightWidth;
+        lr.endWidth = highlightWidth;
+        lr.startColor = highlightColor;
+        lr.endColor = highlightColor;
+        lr.sortingOrder = original.sortingOrder + 100;
+        lr.sortingLayerName = original.sortingLayerName;
+
+        // 使用默认精灵材质
+        lr.material = new Material(Shader.Find("Sprites/Default"));
+
+        // 将本地坐标转换为世界坐标
+        Vector3[] worldPoints = new Vector3[outlinePoints.Length];
+        for (int i = 0; i < outlinePoints.Length; i++)
+        {
+            worldPoints[i] = original.transform.TransformPoint(outlinePoints[i]);
+            worldPoints[i].z = original.transform.position.z - 0.01f;
+        }
+
+        lr.SetPositions(worldPoints);
+        outlineRenderers.Add(lr);
+    }
+
+    Vector2[] GetSpriteOutlinePoints(SpriteRenderer sr)
+    {
+        Sprite sprite = sr.sprite;
+
+        if (sprite.GetPhysicsShapeCount() > 0)
+        {
+            List<Vector2> shapePoints = new List<Vector2>();
+            sprite.GetPhysicsShape(0, shapePoints);
+
+            if (shapePoints.Count > 0)
+            {
+                return shapePoints.ToArray();
+            }
+        }
+        Bounds bounds = sprite.bounds;
+        Vector2 min = bounds.min;
+        Vector2 max = bounds.max;
+
+        // 返回矩形的四个角点
+        return new Vector2[]
+        {
+            new Vector2(min.x, min.y),
+            new Vector2(max.x, min.y),
+            new Vector2(max.x, max.y),
+            new Vector2(min.x, max.y)
+        };
+    }
+
+    void UpdateOutlineBlink()
+    {
+        float alpha = Mathf.Lerp(0.3f, 1f,
+            (Mathf.Sin(Time.time * highlightBlinkSpeed * Mathf.PI) + 1f) * 0.5f);
+
+        Color blinkColor = highlightColor;
+        blinkColor.a = alpha;
+
+        foreach (LineRenderer lr in outlineRenderers)
+        {
+            if (lr == null) continue;
+            lr.startColor = blinkColor;
+            lr.endColor = blinkColor;
+        }
+    }
+
+    void ClearHighlights()
+    {
+        foreach (LineRenderer lr in outlineRenderers)
+        {
+            if (lr != null)
+            {
+                Destroy(lr.gameObject);
+            }
+        }
+        outlineRenderers.Clear();
+    }
+
+    #endregion
+
+    #region 遮罩动画系统（保持不变）
+
     void StartOpen(Mode mode)
     {
+        previewState = currentState;
         currentMode = mode;
         currentState = State.Opening;
         spriteRenderer.enabled = true;
-
         switch (mode)
         {
             case Mode.Mode1:
@@ -173,6 +356,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
                 InitMode2Close();
                 break;
         }
+
     }
 
     void InitMode1Open()
@@ -193,7 +377,6 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     void InitMode1Close()
     {
-
         CalculateScreenBounds();
 
         transform.position = screenCenter;
@@ -316,32 +499,44 @@ public class ScreenCoverTransition2D : MonoBehaviour
     void FinishOpen()
     {
         currentState = State.Covered;
+        previewState = currentState;
         currentMode = Mode.None;
     }
 
     void FinishClose()
     {
         currentState = State.Idle;
+        previewState = currentState;
         currentMode = Mode.None;
         spriteRenderer.enabled = false;
     }
+
+    #endregion
 
     public bool IsUpdating()
     {
         return currentState == State.Opening || currentState == State.Closing;
     }
 
+    public bool IsHighlighting()
+    {
+        return currentState == State.Highlighting;
+    }
+
     public int IsOverlap()
     {
-        if (IsUpdating()) return -1;
+        if (IsUpdating() || IsHighlighting()) return -1;
         if (currentState == State.Covered) return 1;
         return 0;
     }
 
     public void ForceReset()
     {
+        StopAllCoroutines();
+        ClearHighlights();
         currentState = State.Idle;
         currentMode = Mode.None;
+        pendingMode = Mode.None;
         spriteRenderer.enabled = false;
         mode1CurrentRotation = 0f;
     }

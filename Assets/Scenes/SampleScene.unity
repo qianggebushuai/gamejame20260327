@@ -2890,6 +2890,7 @@ GameObject:
   - component: {fileID: 1150006270}
   - component: {fileID: 1150006269}
   - component: {fileID: 1150006268}
+  - component: {fileID: 1150006271}
   m_Layer: 0
   m_Name: AreaMask
   m_TagString: Untagged
@@ -2911,6 +2912,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode1Key: 103
   mode2Key: 104
+  opentargetLayersToHighlight:
+  - {fileID: 647013269}
+  - {fileID: 794177091}
+  - {fileID: 1204844682}
+  - {fileID: 1366969918}
+  closetargetLayersToHighlight:
+  - {fileID: 1446165556}
+  - {fileID: 1135902488}
+  - {fileID: 693602444}
+  - {fileID: 1171797773}
+  - {fileID: 1954306077}
+  highlightDuration: 1.5
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightWidth: 0.05
+  highlightBlinkSpeed: 5
   mode1BaseScaleSpeed: 2
   mode1OpenRotateSpeed: 360
   mode1CloseRotateSpeed: 360
@@ -2986,6 +3002,21 @@ Transform:
   - {fileID: 1387255226}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1150006271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1150006267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e994802fa1e31fe41b668a08dee4f0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineColor: {r: 1, g: 0.9, b: 0, a: 1}
+  outlineWidth: 0.02
+  pulseSpeed: 3
 --- !u!1 &1171797771
 GameObject:
   m_ObjectHideFlags: 0
@@ -3264,6 +3295,8 @@ MonoBehaviour:
   wallDashDuration: 0.25
   wallDashSpeedH: 30
   wallDashSpeedV: 30
+  dashcooldown: 0.5
+  candash: 1
   playerLayer: 0
   ctl: {fileID: 1150006268}
   groupALayer: 0

@@ -107,11 +107,13 @@ public class Player1 : entity
         if (ctl.IsUpdating()) return;
         if (ctl.IsOverlap() == 0)
         {
+            whatIsGround = 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("SPRING");
             Physics2D.IgnoreLayerCollision(playerLayer, groupALayer, false);
             Physics2D.IgnoreLayerCollision(playerLayer, groupBLayer, true);
         }
         else
         {
+            whatIsGround = 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("WINTER");
             Physics2D.IgnoreLayerCollision(playerLayer, groupALayer, true);
             Physics2D.IgnoreLayerCollision(playerLayer, groupBLayer, false);
         }

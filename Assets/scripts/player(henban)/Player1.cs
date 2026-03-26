@@ -34,6 +34,9 @@ public class Player1 : entity
     public float wallDashDuration = 0.2f;   // 墙壁冲刺持续时间
     public float wallDashSpeedH = 15f;      // 墙壁冲刺水平速度
     public float wallDashSpeedV = 12f;      // 墙壁冲刺垂直速度
+    public float dashcooldown = 0.5f;
+    float dashcooldowntimer;
+    public bool candash=true;
     public int playerLayer;
     [Header("layermaskchange")] 
     public ScreenCoverTransition2D ctl;
@@ -96,7 +99,7 @@ public class Player1 : entity
         groupALayer = LayerMask.NameToLayer("SPRING");
         groupBLayer = LayerMask.NameToLayer("WINTER");
         base.Start();
-
+        dashcooldowntimer = dashcooldown;
         statemachine.Initialized(idlestate);
     }
     protected override void Update()
@@ -229,14 +232,32 @@ public class Player1 : entity
     }
     private void checkfordash()
     {
+        if (!candash)
+        {
+            dashcooldown -= Time.deltaTime;
+            if (dashcooldown < 0)
+            {
+                candash = true;
+                dashcooldown = dashcooldowntimer;
+            }
+        }
         if (iswalldetected())
         {
             return;
         }
-        
+        if (Input.GetKeyDown(KeyCode.LeftShift)&& candash)
+        {
+
+            dashdirection = Input.GetAxisRaw("Horizontal");
+            if (dashdirection == 0)
+            {
+                dashdirection = facingdirection;
+            }
+            statemachine.changestate(dashstate);
+        }
 
 
-        
+
     }
     private void quickfall()
     {

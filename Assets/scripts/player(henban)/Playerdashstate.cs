@@ -50,7 +50,7 @@ public class Playerdashstate : Playerstate
         player.isWallDashing = false;
         isVerticalDash = false;
         base.Exit();
-        
+        player.candash = false;
         if (player.isWallDashing)
         {
             player.rb.velocity = new Vector2(player.rb.velocity.x * 0.5f, player.rb.velocity.y);

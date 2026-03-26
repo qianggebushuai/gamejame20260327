@@ -44,3 +44,9 @@ TagManager:
   - name: player
     uniqueID: 957273947
     locked: 0
+  - name: spring
+    uniqueID: 2065834005
+    locked: 0
+  - name: winter
+    uniqueID: 1106871561
+    locked: 0

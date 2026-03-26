@@ -5219,6 +5219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   windForce: 100
+  rotation: 0.1
 --- !u!61 &1860990994
 BoxCollider2D:
   m_ObjectHideFlags: 0

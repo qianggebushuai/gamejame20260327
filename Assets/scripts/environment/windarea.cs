@@ -9,7 +9,7 @@ public class windarea : MonoBehaviour
     public float windForce = 10f;             
 
     public enum winddir { up, down, left, right };
-
+    public float rotation=0;
     private List<Player1> playersInArea = new List<Player1>();
 
     void Start()
@@ -54,7 +54,8 @@ public class windarea : MonoBehaviour
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            Vector2 windVelocity = GetWindDirection() * windForce;
+            Vector2 windVelocity = (GetWindDirection() * rotation).normalized * windForce ;
+            Quaternion rotate = Quaternion.Euler(0, 0, rotation);
             rb.velocity += windVelocity * Time.deltaTime;
         }
     }

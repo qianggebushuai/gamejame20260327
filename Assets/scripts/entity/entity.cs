@@ -95,12 +95,15 @@ public class entity : MonoBehaviour
     {
         facingdirection = facingdirection * -1;
         facingright = !facingright;
-        transform.Rotate(0, 180, 0);
+
+        Vector3 currentScale = transform.localScale;
+        currentScale.x *= -1; 
+        transform.localScale = currentScale;
+
         if (onflipped != null)
         {
             onflipped();
         }
-      
     }
     protected virtual void Flipcontroller(float _x)
     {

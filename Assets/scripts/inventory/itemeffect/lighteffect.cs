@@ -6,11 +6,8 @@ public class LightEffect : itemeffect
     [Header("光源效果设置")]
     [SerializeField] private string targetTag = "Player";
 
-    private PlayerLight cachedPlayerLight;  // 缓存引用，避免重复查找
+    private PlayerLight cachedPlayerLight;  
 
-    /// <summary>
-    /// 执行效果 - 开启玩家光源
-    /// </summary>
     public override void excuteeffect(Transform _position)
     {
         PlayerLight playerLight = FindPlayerLight();
@@ -26,9 +23,6 @@ public class LightEffect : itemeffect
         }
     }
 
-    /// <summary>
-    /// 移除效果 - 关闭玩家光源
-    /// </summary>
     public override void removeeffect(Transform _position)
     {
         PlayerLight playerLight = FindPlayerLight();
@@ -44,9 +38,6 @@ public class LightEffect : itemeffect
         }
     }
 
-    /// <summary>
-    /// 查找玩家的光源组件
-    /// </summary>
     private PlayerLight FindPlayerLight()
     {
         // 如果已缓存，直接返回

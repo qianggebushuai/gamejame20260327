@@ -239,7 +239,6 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
         LineRenderer lr = outlineObj.AddComponent<LineRenderer>();
 
-        // 设置 LineRenderer 属性
         lr.useWorldSpace = true;
         lr.loop = true;
         lr.positionCount = outlinePoints.Length;
@@ -250,10 +249,8 @@ public class ScreenCoverTransition2D : MonoBehaviour
         lr.sortingOrder = original.sortingOrder + 100;
         lr.sortingLayerName = original.sortingLayerName;
 
-        // 使用默认精灵材质
         lr.material = new Material(Shader.Find("Sprites/Default"));
 
-        // 将本地坐标转换为世界坐标
         Vector3[] worldPoints = new Vector3[outlinePoints.Length];
         for (int i = 0; i < outlinePoints.Length; i++)
         {
@@ -323,7 +320,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     #endregion
 
-    #region 遮罩动画系统（保持不变）
+    #region 遮罩动画系统
 
     void StartOpen(Mode mode)
     {

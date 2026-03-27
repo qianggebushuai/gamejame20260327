@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - wall
   layers:
   - Default
   - TransparentFX
@@ -41,12 +42,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: player
-    uniqueID: 957273947
-    locked: 0
   - name: spring
     uniqueID: 2065834005
     locked: 0
   - name: winter
     uniqueID: 1106871561
+    locked: 0
+  - name: player
+    uniqueID: 957273947
     locked: 0

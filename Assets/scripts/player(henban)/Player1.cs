@@ -59,6 +59,8 @@ public class Player1 : entity
     public Playerdashstate dashstate { get; private set; }
     public Playerwallslidstate wallslide { get; private set; }
     public Playerwalljump walljump { get; private set; }
+
+    public playerspawnstate spawnstate { get; private set; }
     #endregion
     public Playerprimaryattack primaryattack { get; private set; }
     public Playerhitstate hitstate { get; private set; }
@@ -90,6 +92,7 @@ public class Player1 : entity
         catchsword=new playercatchswordstate(this, statemachine, "Catchsword");
         diestate=new Playerdiestate(this, statemachine, "Die");
         summonstate=new Plyersummonswordstate(this, statemachine, "Summon");
+        spawnstate = new playerspawnstate(this, statemachine, "Spawn");
 
     }
     protected override void Start()
@@ -132,95 +135,23 @@ public class Player1 : entity
 
     private Sprite circleSprite;
 
-    // 调用示例：StartCoroutine(CircularBlueSpread(2f, 0.5f));
     IEnumerator CircularBlueSpread(float totalDuration, float spreadTime)
     {
-        // 加载圆形图片（确保Resources文件夹中有"CircleMask"图片）
-        circleSprite = Resources.Load<Sprite>("CircleMask");
-        if (circleSprite == null)
+        yield return null;
+    }
+    public void causedamage()
+    {
+        GameManager.instance.lives -= 1;
+        if (GameManager.instance.lives != 0)
         {
-            Debug.LogError("请在Resources文件夹中添加名为CircleMask的圆形图片");
-            yield break;
+            statemachine.changestate(diestate);
+            GameManager.instance.PlayerDie();
         }
-
-        // 创建UI画布
-        GameObject canvasObj = new GameObject("CircularBlueCanvas");
-        Canvas canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 1000; // 确保在最上层
-        canvasObj.AddComponent<CanvasScaler>();
-        canvasObj.AddComponent<GraphicRaycaster>();
-
-        // 创建圆形扩散的Image
-        GameObject circleObj = new GameObject("BlueCircle");
-        circleObj.transform.SetParent(canvasObj.transform);
-        Image blueImage = circleObj.AddComponent<Image>();
-        blueImage.sprite = circleSprite;
-        blueImage.color = new Color(0, 0, 1, 0.3f); // 初始较浅的半透明蓝色
-
-        // 设置初始位置和大小（中心点，极小尺寸）
-        RectTransform rt = circleObj.GetComponent<RectTransform>();
-        rt.pivot = new Vector2(0.5f, 0.5f); // 中心点为 pivot
-        rt.anchoredPosition = Vector2.zero; // 屏幕中心
-        rt.sizeDelta = new Vector2(10, 10); // 初始大小
-
-        // 计算目标大小（确保覆盖全屏的圆形）
-        float diagonal = Mathf.Sqrt(Screen.width * Screen.width + Screen.height * Screen.height);
-        float targetSize = diagonal * 1.2f; // 稍微放大确保覆盖
-
-        // 圆形扩散并变色动画
-        float elapsed = 0;
-        GameObject[] allEventObjects = GameObject.FindGameObjectsWithTag("event");
-
-        // 2. 遍历数组，逐个设置激活状态
-        foreach (GameObject eventObj in allEventObjects)
+        else
         {
-            if (eventObj.GetComponentInChildren<ParticleSystem>())
-            {
-                eventObj.GetComponentInChildren<ParticleSystem>().Pause(); // 也可根据需求改为 false（批量隐藏）
-            }
-            
+            statemachine.changestate(diestate);
+            GameManager.instance.RestartGame();
         }
-
-        while (elapsed < spreadTime)
-        {
-            elapsed += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsed / spreadTime);
-            // 从中心向外平滑扩散
-            float currentSize = Mathf.Lerp(10, targetSize, progress);
-            rt.sizeDelta = new Vector2(currentSize, currentSize);
-            // 颜色从浅蓝逐渐变深蓝
-            float blueRamp = Mathf.Lerp(0.3f, 1f, progress);
-            blueImage.color = new Color(0, 0, blueRamp, blueImage.color.a);
-            yield return null;
-        }
-
-       
-        float holdTime = totalDuration - spreadTime;
-        if (holdTime > 0)
-            yield return new WaitForSeconds(holdTime);
-
-        // 逐渐变淡的动画
-        float fadeTime = 1f; // 淡入淡出的时间，可根据需要调整
-        elapsed = 0;
-        while (elapsed < fadeTime)
-        {
-            elapsed += Time.deltaTime;
-            float progress = Mathf.Clamp01(elapsed / fadeTime);
-            // 透明度逐渐降低
-            blueImage.color = new Color(blueImage.color.r, blueImage.color.g, blueImage.color.b, Mathf.Lerp(1f, 0f, progress));
-            yield return null;
-        }
-        foreach (GameObject eventObj in allEventObjects)
-        {
-            if (eventObj.GetComponentInChildren<ParticleSystem>())
-            {
-                eventObj.GetComponentInChildren<ParticleSystem>().Play(); // 也可根据需求改为 false（批量隐藏）
-            }
-        }
-        // 淡入淡出结束后销毁canvasObj
-        Destroy(canvasObj);
-        
     }
     public virtual void assignanimname(string _aimboolname)
     {

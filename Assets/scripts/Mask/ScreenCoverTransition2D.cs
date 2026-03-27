@@ -31,7 +31,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
     public float mode2TiltAngle = 45f;
     public float mode2OpenMoveSpeed = 10f;
     public float mode2CloseMoveSpeed = 10f;
-
+    public static ScreenCoverTransition2D instance;
     private enum State { Idle, Highlighting, Opening, Closing, Covered }
     private enum Mode { None, Mode1, Mode2 }
 
@@ -57,9 +57,10 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     private List<LineRenderer> outlineRenderers = new List<LineRenderer>();
     private Mode pendingMode = Mode.None;
-
+    GameObject player;
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer == null)
         {
@@ -90,6 +91,11 @@ public class ScreenCoverTransition2D : MonoBehaviour
 
     void Update()
     {
+        if (player != null && currentState == State.Idle)
+        {
+            transform.position = player.transform.position;
+        }
+
         if (currentState == State.Opening || currentState == State.Closing)
         {
             switch (currentMode)

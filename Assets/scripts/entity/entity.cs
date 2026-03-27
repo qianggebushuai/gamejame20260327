@@ -62,7 +62,11 @@ public class entity : MonoBehaviour
       
     }
     public virtual bool isgrounddetected() => Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, whatIsGround);
-    public virtual bool iswalldetected() => Physics2D.Raycast(wallCheck.position, Vector2.right * facingdirection, wallCheckDistance, whatIsGround);
+    public virtual bool iswalldetected()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(wallCheck.position, Vector2.right * facingdirection, wallCheckDistance);
+        return hit.collider != null && hit.collider.CompareTag("wall");
+    }
     public virtual void freezetime(bool _timefrozen)
     {
         if (_timefrozen)

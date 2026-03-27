@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Playerdiestate : Playerstate
+public class playerspawnstate : Playerstate
 {
-   
-   
-    public Playerdiestate(Player1 _player, Playerstatemachine _statemachine, string _animboolname) : base(_player, _statemachine, _animboolname)
+    public playerspawnstate(Player1 _player, Playerstatemachine _statemachine, string _animboolname) : base(_player, _statemachine, _animboolname)
     {
     }
 
@@ -17,15 +16,13 @@ public class Playerdiestate : Playerstate
 
     public override void Exit()
     {
-        statemachine.changestate(player.spawnstate);
+        statemachine.changestate(player.idlestate);
         base.Exit();
-        
-        
     }
 
     public override void Update()
     {
         base.Update();
-        
+
     }
 }

@@ -104,7 +104,11 @@ public class Player1 : entity
     }
     protected override void Update()
     {
-        if (ctl.IsUpdating()) return;
+        if (ctl.IsUpdating())
+        {
+            Setvelocity(0, 0);
+            return;
+        } 
         if (ctl.IsOverlap() == 0)
         {
             whatIsGround = 1 << LayerMask.NameToLayer("Ground") | 1 << LayerMask.NameToLayer("SPRING");

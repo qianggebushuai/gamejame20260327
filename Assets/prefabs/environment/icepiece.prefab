@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7224372035384284437}
   - component: {fileID: 6372483552916250529}
   - component: {fileID: 4152394400672681641}
+  - component: {fileID: 1932850677757326524}
   m_Layer: 0
   m_Name: icepiece
   m_TagString: Untagged
@@ -112,3 +113,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1932850677757326524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6462656526376668383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f809941ce86912e4bb7e50bc9576e812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breaktime: 5
+  Rotatespeed: 360

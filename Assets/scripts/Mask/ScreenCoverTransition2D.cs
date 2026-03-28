@@ -80,24 +80,29 @@ public class ScreenCoverTransition2D : MonoBehaviour
             enabled = false;
             return;
         }
-
         spriteRenderer.enabled = false;
+        transform.localScale = Vector3.one * 0.01f;
+        currentState = State.Idle;
     }
 
     void CalculateScreenBounds()
     {
         screenHeightWorld = 2f * mainCamera.orthographicSize;
         screenWidthWorld = screenHeightWorld * mainCamera.aspect;
+
         screenCenter = mainCamera.transform.position;
-        screenCenter.z = 0;
+        screenCenter.z = transform.position.z; // ±£≥÷’⁄’÷µƒ z ÷·
+
         screenDiagonal = Mathf.Sqrt(screenWidthWorld * screenWidthWorld + screenHeightWorld * screenHeightWorld);
     }
 
     void Update()
     {
-        if (player != null && currentState == State.Idle)
+        if ((currentState == State.Idle || currentState == State.Covered) && player != null)
         {
-            transform.position = player.transform.position;
+            Vector3 playerPos = player.transform.position;
+            playerPos.z = transform.position.z;
+            transform.position = playerPos;
         }
 
         if (currentState == State.Opening || currentState == State.Closing)
@@ -515,6 +520,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
         previewState = currentState;
         currentMode = Mode.None;
         spriteRenderer.enabled = false;
+        transform.localScale = Vector3.one * 0.01f;
     }
 
     #endregion

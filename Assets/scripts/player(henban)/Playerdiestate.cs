@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Playerdiestate : Playerstate
 {
-   
-   
+
+    private float dietimer = 3f;
     public Playerdiestate(Player1 _player, Playerstatemachine _statemachine, string _animboolname) : base(_player, _statemachine, _animboolname)
     {
     }
@@ -17,7 +17,7 @@ public class Playerdiestate : Playerstate
 
     public override void Exit()
     {
-        statemachine.changestate(player.spawnstate);
+
         base.Exit();
         
         
@@ -26,6 +26,10 @@ public class Playerdiestate : Playerstate
     public override void Update()
     {
         base.Update();
-        
+        dietimer -= Time.deltaTime;
+        if (dietimer < 0)
+        {
+            statemachine.changestate(player.spawnstate);
+        }
     }
 }

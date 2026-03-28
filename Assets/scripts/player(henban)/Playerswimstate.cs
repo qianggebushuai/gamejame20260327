@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Playerswimstate : Playerstate
 {
-    private float swimSpeed = 1f;           // 稍微加快点水平速度
-    private float floatUpSpeedLimit = 8f;   // 上浮时的最大速度限制 (之前是3，太慢了)
-    private float surfaceFloatForce = 15f;  // 浮力加速度
+    private float swimSpeed = 1f;
+    private float oxygenDecreaseRate = 10f;
+    private float floatUpSpeedLimit = 8f;  
+    private float surfaceFloatForce = 15f; 
 
     private float normalGravity;
     private float normalDrag;
@@ -40,7 +41,7 @@ public class Playerswimstate : Playerstate
     public override void Update()
     {
         base.Update();
-
+        ConsumeOxygen();
         // 离开水面
         if (!player.isInWater)
         {
@@ -78,13 +79,12 @@ public class Playerswimstate : Playerstate
             // 2. 接近水面 (稳定漂浮)
             else if (Mathf.Abs(distanceToSurface) <= 0.2f)
             {
-                // 用 Lerp 平滑降速，停留在水面
                 yVelocity = Mathf.Lerp(yVelocity, 0, Time.deltaTime * 10f);
 
                 // 在水面上按空格可以跳跃出水
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    yVelocity = 12f; // 赋予一个冲出水面的向上初速度
+                    yVelocity = 30f; 
                 }
             }
         }
@@ -92,4 +92,15 @@ public class Playerswimstate : Playerstate
         // 应用速度
         player.Setvelocity(xInput * swimSpeed, yVelocity);
     }
+    private void ConsumeOxygen()
+    {
+        player.currentoxegenvalue -= oxygenDecreaseRate * Time.deltaTime;
+        player.currentoxegenvalue = Mathf.Max(0, player.currentoxegenvalue);
+
+        if (player.currentoxegenvalue <= 0)
+        {
+            player.causedamage();
+        }
+    }
+
 }

@@ -15,7 +15,6 @@ public class WaterBody : MonoBehaviour
     public SpriteRenderer waterRenderer;
     private Material waterMat;
 
-    // --- 新增：用于同步Shader的波浪参数 ---
     private float waveSpeed;
     private float waveAmplitude;
     private float waveFrequency;
@@ -147,7 +146,6 @@ public class WaterBody : MonoBehaviour
         float objectY = rb.transform.position.y;
         float objectX = rb.transform.position.x;
 
-        // 【修改点】：普通箱子等道具也要受波浪影响！获取波浪高度
         float dynamicSurfaceY = GetWaterSurfaceY(objectX);
         float submergedDepth = dynamicSurfaceY - objectY;
 

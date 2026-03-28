@@ -155,7 +155,21 @@ public class Player1 : entity
     public void turnblue(float duration, float spreadTime) => StartCoroutine(CircularBlueSpread(duration, spreadTime));
 
     private Sprite circleSprite;
+    private void recoveroxegen()
+    {
+        if (!isInWater)
+        {
+            if (currentoxegenvalue < maxoxegenvalue)
+            {
+                currentoxegenvalue += Time.deltaTime;
+            }
+            else
+            {
+                currentoxegenvalue = maxoxegenvalue;
+            }
+        }
 
+    }
     IEnumerator CircularBlueSpread(float totalDuration, float spreadTime)
     {
         yield return null;
@@ -276,16 +290,10 @@ public class Player1 : entity
         Debug.Log("进入水中");
     }
 
-    /// <summary>
-    /// 离开水中
-    /// </summary>
     public void ExitWater()
     {
         isInWater = false;
         currentWater = null;
-
-        // 恢复氧气
-        currentoxegenvalue = maxoxegenvalue;
 
         Debug.Log("离开水中");
     }

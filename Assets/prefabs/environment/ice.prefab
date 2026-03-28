@@ -75,7 +75,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1106871561
-  m_SortingLayer: 3
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 0.20392157, g: 0.7764706, b: 0.9490196, a: 1}
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iceprefab: {fileID: 6462656526376668383, guid: 89f33742725ef614eb88ccd4c89cbfdf, type: 3}
-  minSpeedToSpawn: 5
+  minSpeedToSpawn: 25
   spawnForce: 10
   spawnCount: 15
   playerTag: Player

@@ -32,10 +32,10 @@ public class ScreenCoverTransition2D : MonoBehaviour
     public float mode2OpenMoveSpeed = 10f;
     public float mode2CloseMoveSpeed = 10f;
     public static ScreenCoverTransition2D instance;
-    private enum State { Idle, Highlighting, Opening, Closing, Covered }
+    public enum State { Idle, Highlighting, Opening, Closing, Covered }
     private enum Mode { None, Mode1, Mode2 }
 
-    private State currentState = State.Idle;
+    public State currentState = State.Idle;
     private State previewState = State.Idle;
     private Mode currentMode = Mode.None;
 
@@ -58,6 +58,10 @@ public class ScreenCoverTransition2D : MonoBehaviour
     private List<LineRenderer> outlineRenderers = new List<LineRenderer>();
     private Mode pendingMode = Mode.None;
     GameObject player;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");

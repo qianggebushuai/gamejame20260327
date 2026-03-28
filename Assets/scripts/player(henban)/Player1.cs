@@ -47,6 +47,18 @@ public class Player1 : entity
     public float wallBounceSpeedV = 12f;
     public bool cancontrol = true;
     float dietime = 5f;
+    [Header("氧气条")]
+    public float maxoxegenvalue=5f;
+    public float currentoxegenvalue;
+    [Header("水中设置")]
+    public bool isInWater = false;
+    public bool isUnderwater = false; // 是否完全在水下
+    public WaterBody currentWater;
+    public float waterSurfaceOffset = 0.5f; // 玩家中心到头顶的距离
+
+    [Header("水中物理")]
+    private float normalGravity;
+    private float normalDrag;
     public float dashdirection { get; private set; }
    
     #region Conponents
@@ -61,7 +73,7 @@ public class Player1 : entity
     public Playerwalljump walljump { get; private set; }
 
     public playerspawnstate spawnstate { get; private set; }
-    #endregion
+
     public Playerprimaryattack primaryattack { get; private set; }
     public Playerhitstate hitstate { get; private set; }
     public Playercounterattackstate counterattack { get; private set; }
@@ -70,6 +82,10 @@ public class Player1 : entity
     public Playerdiestate diestate { get; private set; }
     public Plyersummonswordstate summonstate { get; private set; }
 
+    public Playerswimstate swimstate { get; private set; }
+
+    public Playerdivestate divestate { get; private set; }
+    #endregion
     public string lastanimboolname { get; private set; }
     public float jumpchecktime = 0.1f;
     
@@ -93,7 +109,8 @@ public class Player1 : entity
         diestate=new Playerdiestate(this, statemachine, "Die");
         summonstate=new Plyersummonswordstate(this, statemachine, "Summon");
         spawnstate = new playerspawnstate(this, statemachine, "Spawn");
-
+        swimstate = new Playerswimstate(this, statemachine, "Swim");
+        divestate =new Playerdivestate(this, statemachine, "Dive");
     }
     protected override void Start()
     {
@@ -103,6 +120,9 @@ public class Player1 : entity
         groupBLayer = LayerMask.NameToLayer("WINTER");
         base.Start();
         dashcooldowntimer = dashcooldown;
+        currentoxegenvalue = maxoxegenvalue;
+        normalGravity = rb.gravityScale;
+        normalDrag = rb.drag;
         statemachine.Initialized(idlestate);
     }
     protected override void Update()
@@ -126,6 +146,7 @@ public class Player1 : entity
         }
         base.Update();
         checkfordash();
+        UpdateWaterState();
         quickfall();
 
         statemachine.currentstate.Update();
@@ -228,7 +249,59 @@ public class Player1 : entity
     {
         sr.color = new Color(1, 1, 1, sr.color.a - (Time.deltaTime * colorlosingspeed));
     }
+    void UpdateWaterState()
+    {
+        if (isInWater && currentWater != null)
+        {
+            float playerTop = transform.position.y + waterSurfaceOffset;
+            isUnderwater = playerTop < currentWater.GetWaterSurfaceY();
+        }
+        else
+        {
+            isUnderwater = false;
+        }
+    }
+    public void EnterWater(WaterBody water)
+    {
+        isInWater = true;
+        currentWater = water;
 
+        if (statemachine.currentstate != swimstate &&
+            statemachine.currentstate != divestate &&
+            statemachine.currentstate != diestate)
+        {
+            statemachine.changestate(swimstate);
+        }
+
+        Debug.Log("进入水中");
+    }
+
+    /// <summary>
+    /// 离开水中
+    /// </summary>
+    public void ExitWater()
+    {
+        isInWater = false;
+        currentWater = null;
+
+        // 恢复氧气
+        currentoxegenvalue = maxoxegenvalue;
+
+        Debug.Log("离开水中");
+    }
+
+    /// <summary>
+    /// 检测是否在水面
+    /// </summary>
+    public bool IsAtWaterSurface()
+    {
+        if (!isInWater || currentWater == null) return false;
+
+        float waterSurface = currentWater.GetWaterSurfaceY();
+        float playerTop = transform.position.y + 0.5f; // 玩家头部位置
+
+        return playerTop >= waterSurface;
+    }
 
 
 }

@@ -38,6 +38,11 @@ public class Playerairstate : Playerstate
     public override void Update()
     {
         base.Update();
+        if (player.isInWater)
+        {
+            statemachine.changestate(player.swimstate);
+            return;
+        }
         player.rb.gravityScale += 0.5f * Time.deltaTime;
         player.jumpchecktime -= Time.deltaTime;
         preparetime-= Time.deltaTime;

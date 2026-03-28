@@ -22,6 +22,11 @@ public class Playermovestate : Playergroundedstate
     public override void Update()
     {
         base.Update();
+        if (player.isInWater)
+        {
+            statemachine.changestate(player.swimstate);
+            return;
+        }
         player.Setvelocity(xInput,player.rb.velocity.y);
         if (xInput == 0)
         {

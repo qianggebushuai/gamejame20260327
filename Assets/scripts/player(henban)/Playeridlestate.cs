@@ -18,6 +18,11 @@ public class Playeridlestate : Playergroundedstate
     public override void Update()
     {
         base.Update();
+        if (player.isInWater)
+        {
+            statemachine.changestate(player.swimstate);
+            return;
+        }
         if (xInput != 0)
         {
             statemachine.changestate(player.movestate);

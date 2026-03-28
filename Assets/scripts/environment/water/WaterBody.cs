@@ -3,166 +3,179 @@ using System.Collections.Generic;
 
 public class WaterBody : MonoBehaviour
 {
-    [Header("水体设置")]
-    public float waterSurfaceY; // 水面高度
-    public float waterBottomY; // 水底高度
+    [Header("水面边界 (动态更新)")]
+    public float waterSurfaceY;
+    public float waterBottomY;
 
     [Header("水体属性")]
-    public float buoyancyStrength = 20f; // 浮力强度
-    public float waterDrag = 3f; // 水中阻力
-    public float surfaceFloatHeight = 0.3f; // 漂浮时露出水面的高度
+    public float buoyancyStrength = 20f;
+    public float surfaceFloatHeight = 0.3f;
 
-    [Header("视觉设置")]
+    [Header("视觉与材质设置")]
     public SpriteRenderer waterRenderer;
-    public Color waterColor = new Color(0.2f, 0.5f, 1f, 0.5f);
+    private Material waterMat;
 
-    // 当前在水中的物体
+    // --- 新增：用于同步Shader的波浪参数 ---
+    private float waveSpeed;
+    private float waveAmplitude;
+    private float waveFrequency;
+
     private List<Rigidbody2D> objectsInWater = new List<Rigidbody2D>();
-
-    // 碰撞器引用
     private BoxCollider2D waterCollider;
+
+    // 水位动态升降控制
+    public float waterChangeSpeed = 2f;
+    private bool isChangingLevel = false;
+    private float targetWorldY;
 
     void Start()
     {
         waterCollider = GetComponent<BoxCollider2D>();
         waterCollider.isTrigger = true;
 
-        // 初始化水面和水底位置
-        UpdateWaterBounds();
-
+        // 获取实例化的材质，并读取Shader中的初始数据
         if (waterRenderer != null)
         {
-            waterRenderer.color = waterColor;
+            waterMat = waterRenderer.material;
+            SyncWaveProperties();
         }
+
+        UpdateWaterBounds();
+    }
+
+    void Update()
+    {
+        // 如果你在编辑器里经常调节材质波浪参数，取消下一行的注释以便实时预览
+        // #if UNITY_EDITOR
+        // SyncWaveProperties();
+        // #endif
     }
 
     void FixedUpdate()
     {
-        // 对所有在水中的物体应用浮力
+        UpdateWaterBounds();
+
+        if (isChangingLevel) HandleWaterLevelChange();
+
+        objectsInWater.RemoveAll(rb => rb == null);
+
         foreach (Rigidbody2D rb in objectsInWater)
         {
-            if (rb != null)
-            {
-                ApplyBuoyancy(rb);
-            }
+            ApplyBuoyancy(rb);
         }
     }
 
     /// <summary>
-    /// 更新水体边界
+    /// 从 Shader 读取波纹参数
     /// </summary>
-    void UpdateWaterBounds()
+    private void SyncWaveProperties()
+    {
+        if (waterMat != null)
+        {
+            waveSpeed = waterMat.GetFloat("_WaveSpeed");
+            waveAmplitude = waterMat.GetFloat("_WaveAmplitude");
+            waveFrequency = waterMat.GetFloat("_WaveFrequency");
+        }
+    }
+
+    private void UpdateWaterBounds()
     {
         if (waterCollider != null)
         {
-            Vector2 worldCenter = (Vector2)transform.position + waterCollider.offset;
-            waterSurfaceY = worldCenter.y + waterCollider.size.y / 2f;
-            waterBottomY = worldCenter.y - waterCollider.size.y / 2f;
+            // 基础最高点（不受波浪影响的水平面）
+            waterSurfaceY = waterCollider.bounds.max.y;
+            waterBottomY = waterCollider.bounds.min.y;
         }
     }
 
+    // ================= 核心：动态波浪水面计算 =================
+
     /// <summary>
-    /// 应用浮力
+    /// 获取特定 X 坐标下的波浪水面高度
     /// </summary>
+    /// <param name="worldXPosition">查询者的世界X坐标</param>
+    public float GetWaterSurfaceY(float worldXPosition)
+    {
+        float baseSurfaceY = waterCollider.bounds.max.y;
+
+        // 如果没有材质或者波幅为0，直接返回平滑水面
+        if (waterMat == null || waveAmplitude == 0) return baseSurfaceY;
+
+        // 1. 将世界的X坐标转为水体的本地X坐标（因为Shader用的是 v.vertex.x）
+        float localX = transform.InverseTransformPoint(new Vector3(worldXPosition, 0, 0)).x;
+
+        // 2. C# 复刻 Shader 算法: wave = sin((x * freq) + (time * speed)) * amp
+        // 注意：Unity Shader 中的 _Time.y 等同于 C# 中的 Time.time
+        float waveOffsetLocal = Mathf.Sin((localX * waveFrequency) + (Time.time * waveSpeed)) * waveAmplitude;
+
+        // 3. 将本地的波动高度乘以水体本身的 Y 轴缩放，还原到世界空间的高低变化
+        float waveOffsetWorld = waveOffsetLocal * transform.lossyScale.y;
+
+        // 返回基础高度 + 波浪偏移高度
+        return baseSurfaceY + waveOffsetWorld;
+    }
+
+    // ==========================================================
+
+    private void HandleWaterLevelChange()
+    {
+        float step = waterChangeSpeed * Time.fixedDeltaTime;
+        Vector3 newPos = transform.position;
+        newPos.y = Mathf.MoveTowards(transform.position.y, targetWorldY, step);
+        transform.position = newPos;
+
+        if (Mathf.Abs(transform.position.y - targetWorldY) < 0.01f)
+            isChangingLevel = false;
+    }
+
+    public void MoveWaterToY(float targetY, float customSpeed = -1f)
+    {
+        targetWorldY = targetY;
+        if (customSpeed > 0) waterChangeSpeed = customSpeed;
+        isChangingLevel = true;
+    }
+
+    public void ChangeWaterLevelBy(float amount)
+    {
+        MoveWaterToY(transform.position.y + amount);
+    }
+
     void ApplyBuoyancy(Rigidbody2D rb)
     {
-        float objectY = rb.transform.position.y;
-        float submergedDepth = waterSurfaceY - objectY;
+        if (rb.CompareTag("Player")) return;
 
-        // 完全在水面以上
+        float objectY = rb.transform.position.y;
+        float objectX = rb.transform.position.x;
+
+        // 【修改点】：普通箱子等道具也要受波浪影响！获取波浪高度
+        float dynamicSurfaceY = GetWaterSurfaceY(objectX);
+        float submergedDepth = dynamicSurfaceY - objectY;
+
         if (submergedDepth <= 0) return;
 
-        // 计算浸没比例 (0-1)
         float submergedRatio = Mathf.Clamp01(submergedDepth / 1f);
-
-        // 浮力 = 浮力强度 * 浸没比例
         float buoyancy = buoyancyStrength * submergedRatio;
-
-        // 抵消重力
         float gravityCompensation = Mathf.Abs(Physics2D.gravity.y) * rb.mass;
-
-        // 总向上的力
         float totalUpForce = buoyancy + gravityCompensation * submergedRatio;
 
-        // 在水面附近时，增加稳定力
         if (submergedDepth < surfaceFloatHeight && submergedDepth > 0)
         {
-            // 让玩家稳定在水面
-            float stabilizeForce = (surfaceFloatHeight - submergedDepth) * 20f;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Lerp(rb.velocity.y, 0, Time.fixedDeltaTime * 5f));
+            float dampenFactor = rb.velocity.y * -2f;
+            totalUpForce += dampenFactor;
         }
 
         rb.AddForce(Vector2.up * totalUpForce, ForceMode2D.Force);
     }
 
-    /// <summary>
-    /// 设置水位高度
-    /// </summary>
-    public void SetWaterLevel(float newSurfaceY)
-    {
-        float heightDifference = newSurfaceY - waterSurfaceY;
-
-        // 调整碰撞器
-        Vector2 newSize = waterCollider.size;
-        newSize.y += heightDifference;
-        waterCollider.size = newSize;
-
-        Vector2 newOffset = waterCollider.offset;
-        newOffset.y += heightDifference / 2f;
-        waterCollider.offset = newOffset;
-
-        // 更新水面渲染（如果有）
-        if (waterRenderer != null)
-        {
-            Vector3 scale = waterRenderer.transform.localScale;
-            scale.y += heightDifference;
-            waterRenderer.transform.localScale = scale;
-        }
-
-        UpdateWaterBounds();
-    }
-
-    /// <summary>
-    /// 添加水量
-    /// </summary>
-    public void AddWater(float amount)
-    {
-        SetWaterLevel(waterSurfaceY + amount);
-    }
-
-    /// <summary>
-    /// 移除水量
-    /// </summary>
-    public void RemoveWater(float amount)
-    {
-        SetWaterLevel(waterSurfaceY - amount);
-    }
-
-    public float GetWaterSurfaceY()
-    {
-        return waterSurfaceY;
-    }
-
-    public float GetWaterBottomY()
-    {
-        return waterBottomY;
-    }
-
     void OnTriggerEnter2D(Collider2D collision)
     {
         Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-        if (rb != null && !objectsInWater.Contains(rb))
-        {
-            objectsInWater.Add(rb);
-        }
+        if (rb != null && !objectsInWater.Contains(rb)) objectsInWater.Add(rb);
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
         Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            objectsInWater.Remove(rb);
-        }
+        if (rb != null) objectsInWater.Remove(rb);
     }
 }

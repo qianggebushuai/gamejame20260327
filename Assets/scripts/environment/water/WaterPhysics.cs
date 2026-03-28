@@ -37,7 +37,7 @@ public class WaterPhysics : MonoBehaviour
 
     void ApplyBuoyancy()
     {
-        float waterSurface = currentWater.GetWaterSurfaceY();
+        float waterSurface = 0f;
         float playerY = transform.position.y;
 
         // 计算玩家相对水面的位置
@@ -116,6 +116,6 @@ public class WaterPhysics : MonoBehaviour
     public bool IsUnderwater()
     {
         if (!isInWater || currentWater == null) return false;
-        return transform.position.y < currentWater.GetWaterSurfaceY();
+        return transform.position.y < 0f;
     }
 }

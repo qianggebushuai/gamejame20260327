@@ -58,7 +58,7 @@ public class Playerdivestate : Playerstate
         // 如果玩家想游出水面
         if (player.currentWater != null)
         {
-            float waterSurface = player.currentWater.GetWaterSurfaceY();
+            float waterSurface = player.currentWater.GetWaterSurfaceY(player.transform.position.x);
             float playerY = player.transform.position.y;
 
             // 如果玩家往上游，且头部已经突破水面了，自动切回表面游泳状态
@@ -69,8 +69,7 @@ public class Playerdivestate : Playerstate
             }
         }
 
-        // 设置水底游动速度
-        player.Setvelocity(xInput * diveSwimSpeed, yInput * diveSwimSpeed);
+        player.Setvelocity(xInput * diveSwimSpeed, yInput * diveSwimSpeed*10);
 
         ConsumeOxygen();
     }

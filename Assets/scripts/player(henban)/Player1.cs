@@ -254,7 +254,7 @@ public class Player1 : entity
         if (isInWater && currentWater != null)
         {
             float playerTop = transform.position.y + waterSurfaceOffset;
-            isUnderwater = playerTop < currentWater.GetWaterSurfaceY();
+            isUnderwater = playerTop < currentWater.GetWaterSurfaceY(transform.position.x); ;
         }
         else
         {
@@ -297,7 +297,7 @@ public class Player1 : entity
     {
         if (!isInWater || currentWater == null) return false;
 
-        float waterSurface = currentWater.GetWaterSurfaceY();
+        float waterSurface = currentWater.GetWaterSurfaceY(transform.position.x);
         float playerTop = transform.position.y + 0.5f; // 玩家头部位置
 
         return playerTop >= waterSurface;

@@ -48,14 +48,12 @@ public class Playerswimstate : Playerstate
             return;
         }
 
-        // 触地检测：注意，这里加了条件，只有不在水里时触地才变Idle，防止在水池底变成站立状态
         if (player.isgrounddetected() && !player.isInWater)
         {
             statemachine.changestate(player.idlestate);
             return;
         }
 
-        // 按下 R 键潜水
         if (Input.GetKeyDown(KeyCode.R))
         {
             statemachine.changestate(player.divestate);
@@ -65,10 +63,9 @@ public class Playerswimstate : Playerstate
         float xInput = Input.GetAxisRaw("Horizontal");
         float yVelocity = player.rb.velocity.y;
 
-        // 自动浮力与水面稳定系统
         if (player.currentWater != null)
         {
-            float waterSurface = player.currentWater.GetWaterSurfaceY();
+            float waterSurface = player.currentWater.GetWaterSurfaceY(player.transform.position.x);
             float playerY = player.transform.position.y;
             float distanceToSurface = waterSurface - playerY;
 
@@ -76,7 +73,6 @@ public class Playerswimstate : Playerstate
             if (distanceToSurface > 0.2f)
             {
                 yVelocity += surfaceFloatForce * Time.deltaTime;
-                // 限制最大上浮速度，防止像火箭一样飞出去
                 yVelocity = Mathf.Min(yVelocity, floatUpSpeedLimit);
             }
             // 2. 接近水面 (稳定漂浮)

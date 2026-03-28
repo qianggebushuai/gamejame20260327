@@ -26,6 +26,7 @@ public class WaterBody : MonoBehaviour
     public float waterChangeSpeed = 2f;
     private bool isChangingLevel = false;
     private float targetWorldY;
+    public bool cancomsumeo2whenswim=true;
 
     void Start()
     {
@@ -71,9 +72,21 @@ public class WaterBody : MonoBehaviour
     {
         if (waterMat != null)
         {
-            waveSpeed = waterMat.GetFloat("_WaveSpeed");
-            waveAmplitude = waterMat.GetFloat("_WaveAmplitude");
-            waveFrequency = waterMat.GetFloat("_WaveFrequency");
+            if (waterMat.HasFloat("_WaveSpeed") &&
+                waterMat.HasFloat("_WaveAmplitude") &&
+                waterMat.HasFloat("_WaveFrequency"))
+            {
+                if (waterMat.GetFloat("_WaveSpeed") != 0f)
+                {
+                    waveSpeed = waterMat.GetFloat("_WaveSpeed");
+                    waveAmplitude = waterMat.GetFloat("_WaveAmplitude");
+                    waveFrequency = waterMat.GetFloat("_WaveFrequency");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"WaterBody: Material '{waterMat.name}' 的 Shader '{waterMat.shader.name}' 缺少波浪属性，跳过同步，将使用脚本默认值。");
+            }
         }
     }
 

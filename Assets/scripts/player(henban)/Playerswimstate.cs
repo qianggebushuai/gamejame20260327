@@ -3,7 +3,7 @@ using UnityEngine;
 public class Playerswimstate : Playerstate
 {
     private float swimSpeed = 1f;
-    private float oxygenDecreaseRate = 10f;
+    private float oxygenDecreaseRate = 1f;
     private float floatUpSpeedLimit = 8f;  
     private float surfaceFloatForce = 15f; 
 
@@ -20,7 +20,8 @@ public class Playerswimstate : Playerstate
         normalDrag = player.rb.drag;
 
         player.rb.gravityScale = 0f; 
-        player.rb.drag = 2f;    
+        player.rb.drag = 2f;
+        swimSpeed = player.swimspeed;
 
         player.candash = false;
         player.candoublejump = false;
@@ -94,7 +95,16 @@ public class Playerswimstate : Playerstate
     }
     private void ConsumeOxygen()
     {
-        player.currentoxegenvalue -= oxygenDecreaseRate * Time.deltaTime;
+        if (player.detecter.body != null)
+        {
+            if (!player.detecter.body.cancomsumeo2whenswim) return;
+        }
+        else
+        {
+            return;
+        }
+
+            player.currentoxegenvalue -= oxygenDecreaseRate * Time.deltaTime;
         player.currentoxegenvalue = Mathf.Max(0, player.currentoxegenvalue);
 
         if (player.currentoxegenvalue <= 0)

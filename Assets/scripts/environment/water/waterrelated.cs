@@ -24,7 +24,7 @@ public class WaterRelated : MonoBehaviour
         isValveOpen = !isValveOpen;
     }
 
-    private void TransmitWater()
+    public void TransmitWater()
     {
         if (waterToDecrease == null || waterToIncrease == null || pipeBounds == null) return;
 

@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   iceprefab: {fileID: 6462656526376668383, guid: 89f33742725ef614eb88ccd4c89cbfdf, type: 3}
-  minSpeedToSpawn: 25
+  minSpeedToSpawn: 1000
   spawnForce: 10
   spawnCount: 15
   playerTag: Player

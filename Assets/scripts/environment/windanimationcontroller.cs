@@ -11,7 +11,7 @@ public class windanimationcontroller : MonoBehaviour
     }
     void Start()
     {
-        wind = GetComponentInParent<wind>().gameObject;
+        wind = GetComponentInParent<Wind>().gameObject;
     }
 
     // Update is called once per frame

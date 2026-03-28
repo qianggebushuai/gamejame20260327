@@ -48,21 +48,23 @@ public class Player1 : entity
     public bool cancontrol = true;
     float dietime = 5f;
     [Header("氧气条")]
-    public float maxoxegenvalue=5f;
+    public float maxoxegenvalue=50f;
     public float currentoxegenvalue;
     [Header("水中设置")]
     public bool isInWater = false;
-    public bool isUnderwater = false; // 是否完全在水下
+    public bool isUnderwater = false;
     public WaterBody currentWater;
+    public float swimspeed=1f;
+    public float divespeed=0.4f;
     public float waterSurfaceOffset = 0.5f; // 玩家中心到头顶的距离
 
     [Header("水中物理")]
     private float normalGravity;
     private float normalDrag;
     public float dashdirection { get; private set; }
-   
-    #region Conponents
 
+    #region Conponents
+    public WaterDetector detecter;
     public Playerstatemachine statemachine { get; private set; }
     public Playeridlestate idlestate { get; private set; }
     public Playermovestate movestate { get; private set; }
@@ -111,10 +113,12 @@ public class Player1 : entity
         spawnstate = new playerspawnstate(this, statemachine, "Spawn");
         swimstate = new Playerswimstate(this, statemachine, "Swim");
         divestate =new Playerdivestate(this, statemachine, "Dive");
+        
     }
     protected override void Start()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        detecter = GetComponent<WaterDetector>();
         playerLayer = LayerMask.NameToLayer("Player");
         groupALayer = LayerMask.NameToLayer("SPRING");
         groupBLayer = LayerMask.NameToLayer("WINTER");
@@ -127,6 +131,10 @@ public class Player1 : entity
     }
     protected override void Update()
     {
+        if (ctl == null)
+        {
+            ctl = GameObject.FindGameObjectWithTag("ctl").GetComponent<ScreenCoverTransition2D>();
+        }
         if (ctl.IsUpdating())
         {
             Setvelocity(0, 0);

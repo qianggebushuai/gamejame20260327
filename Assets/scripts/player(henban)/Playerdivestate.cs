@@ -18,7 +18,7 @@ public class Playerdivestate : Playerstate
         base.Enter();
         normalGravity = player.rb.gravityScale;
         normalDrag = player.rb.drag;
-
+        diveSwimSpeed = player.divespeed;
         player.rb.gravityScale = 0f; 
         player.rb.drag = 3f;
         damageTimer = 0f;

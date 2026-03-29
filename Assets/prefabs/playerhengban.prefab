@@ -412,6 +412,7 @@ MonoBehaviour:
   waterSurfaceOffset: 0.5
   detecter: {fileID: 0}
   jumpchecktime: 0.1
+  cc: {fileID: 0}
 --- !u!114 &7087335753410157118
 MonoBehaviour:
   m_ObjectHideFlags: 0

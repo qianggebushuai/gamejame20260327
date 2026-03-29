@@ -24,7 +24,7 @@ public class icetree : MonoBehaviour
 
     private SpriteRenderer sr;
     private Collider2D triggerCollider;
-    private bool hasGrown = false;
+    public bool hasGrown = false;
 
     [Header("物理与落地检测")]
     public LayerMask whatisground;
@@ -84,7 +84,6 @@ public class icetree : MonoBehaviour
         // 2. 生成冰块
         spawn();
 
-        // 3. 【新增】检测周围水体并使其水位下降
         DecreaseSurroundingWater();
     }
 

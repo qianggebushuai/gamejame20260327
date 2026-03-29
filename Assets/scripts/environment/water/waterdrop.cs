@@ -23,6 +23,21 @@ public class waterdrop : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (collision.GetComponent<Player1>())
+        {
+            Player1 player = collision.GetComponent<Player1>();
+            player.isdiedofswim = true;
+            player.causedamage();
+        }
+        if (collision.tag=="tree")
+        {
+            if (collision.GetComponent<windtree>().hasGrown==true|| collision.GetComponent<icetree>().hasGrown == true)
+            {
+                Destroy(gameObject);
+            }
+
+        }
+
         WaterBody water = collision.GetComponent<WaterBody>();
         if (water != null)
         {

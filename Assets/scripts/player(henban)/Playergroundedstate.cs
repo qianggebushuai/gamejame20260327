@@ -11,6 +11,7 @@ public class Playergroundedstate : Playerstate
     public override void Enter()
     {
         base.Enter();
+        player.rb.gravityScale = 8f;
         player.candoublejump = true;
     }
 

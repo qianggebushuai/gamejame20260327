@@ -3,7 +3,7 @@ using UnityEngine;
 public class Playerdivestate : Playerstate
 {
     private float diveSwimSpeed = 0.4f;    
-    private float oxygenDecreaseRate = 10f; 
+    private float oxygenDecreaseRate = 0.5f; 
     private float damageInterval = 1f;
     private float damageTimer = 0f;
 
@@ -77,6 +77,7 @@ public class Playerdivestate : Playerstate
 
         if (player.currentoxegenvalue <= 0)
         {
+            player.isdiedofswim = true;
             player.causedamage();
         }
     }

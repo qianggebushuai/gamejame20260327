@@ -12,6 +12,7 @@ public class windarea : MonoBehaviour
 
     private List<Player1> playersInArea = new List<Player1>();
 
+    // 记录玩家进入风场前的原本重力
     private Dictionary<Player1, float> originalGravityDict = new Dictionary<Player1, float>();
 
     void Start()
@@ -50,10 +51,16 @@ public class windarea : MonoBehaviour
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-
-            Vector2 windVelocity = GetWindDirection() * windForce;
-
-            rb.AddForce(windVelocity, ForceMode2D.Force);
+            if (direction == winddir.left || direction == winddir.right)
+            {
+                Vector2 windVelocity = GetWindDirection() * windForce;
+                rb.AddForce(windVelocity, ForceMode2D.Force);
+            }
+            else
+            {
+                float verticalVelocity = GetWindDirection().y * windForce;
+                rb.velocity = new Vector2(rb.velocity.x, verticalVelocity);
+            }
         }
     }
 
@@ -67,14 +74,16 @@ public class windarea : MonoBehaviour
             Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                originalGravityDict[player] = rb.gravityScale;
+                // 只有左右风向才修改重力
+                if (direction == winddir.left || direction == winddir.right)
+                {
+                    originalGravityDict[player] = rb.gravityScale; // 记录原重力
+                    rb.gravityScale = 1f; 
 
-                rb.gravityScale = 0.2f;
-
-                rb.velocity = new Vector2(rb.velocity.x, 0.2f);
+                    rb.velocity = new Vector2(rb.velocity.x / 100f, 0f);
+                    Debug.Log("检测到玩家进入左右风场，重力已设为 0");
+                }
             }
-
-            Debug.Log("检测到玩家进入，重力已设为 0");
         }
     }
 
@@ -86,13 +95,15 @@ public class windarea : MonoBehaviour
             playersInArea.Remove(player);
 
             Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
-            if (rb != null && originalGravityDict.ContainsKey(player))
+            if (rb != null)
             {
-                rb.gravityScale = 8;
-
-                originalGravityDict.Remove(player);
+                // 如果字典里有记录（说明进入时是左右风向，修改了重力），则恢复原来的重力
+                if (originalGravityDict.ContainsKey(player))
+                {
+                    rb.gravityScale = 8; // 恢复原本的重力（不再写死为8）
+                    originalGravityDict.Remove(player);
+                }
             }
-
         }
     }
 }

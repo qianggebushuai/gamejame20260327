@@ -6,6 +6,7 @@ TagManager:
   tags:
   - wall
   - ctl
+  - tree
   layers:
   - Default
   - TransparentFX

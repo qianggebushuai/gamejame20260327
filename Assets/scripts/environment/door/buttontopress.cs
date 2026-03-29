@@ -52,7 +52,7 @@ public class buttontopress : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             isPlayerInRange = false;
-            //isInteracted = false;
+            isInteracted = false;
 
             StopAllCoroutines();
             StartCoroutine(FadePrompt(0f));

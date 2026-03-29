@@ -57,6 +57,7 @@ public class Player1 : entity
     public float swimspeed=1f;
     public float divespeed=0.4f;
     public float waterSurfaceOffset = 0.5f; // 玩家中心到头顶的距离
+    public bool isdiedofswim = true;
 
     [Header("水中物理")]
     private float normalGravity;
@@ -90,7 +91,7 @@ public class Player1 : entity
     #endregion
     public string lastanimboolname { get; private set; }
     public float jumpchecktime = 0.1f;
-    
+    public CapsuleCollider2D cc;
 
     protected override void Awake()
     {
@@ -122,6 +123,7 @@ public class Player1 : entity
         playerLayer = LayerMask.NameToLayer("Player");
         groupALayer = LayerMask.NameToLayer("SPRING");
         groupBLayer = LayerMask.NameToLayer("WINTER");
+        cc = GetComponent<CapsuleCollider2D>();
         base.Start();
         dashcooldowntimer = dashcooldown;
         currentoxegenvalue = maxoxegenvalue;
@@ -131,6 +133,7 @@ public class Player1 : entity
     }
     protected override void Update()
     {
+        anim.SetBool("Dieway",isdiedofswim);
         if (ctl == null)
         {
             ctl = GameObject.FindGameObjectWithTag("ctl").GetComponent<ScreenCoverTransition2D>();
@@ -185,6 +188,7 @@ public class Player1 : entity
     public void causedamage()
     {
         GameManager.instance.lives -= 1;
+        cc.enabled = false;
         if (GameManager.instance.lives != 0)
         {
             statemachine.changestate(diestate);

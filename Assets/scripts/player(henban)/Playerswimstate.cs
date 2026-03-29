@@ -56,7 +56,7 @@ public class Playerswimstate : Playerstate
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.S))
         {
             statemachine.changestate(player.divestate);
             return;
@@ -109,6 +109,7 @@ public class Playerswimstate : Playerstate
 
         if (player.currentoxegenvalue <= 0)
         {
+            player.isdiedofswim = true;
             player.causedamage();
         }
     }

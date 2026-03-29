@@ -8,6 +8,7 @@ public class door : MonoBehaviour
     public Sprite open;
     public Sprite close;
     public SpriteRenderer sr;
+    public bool isclose = true;
     void Start()
     {
         bc = GetComponent<BoxCollider2D>();
@@ -15,6 +16,10 @@ public class door : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = true;
         sr.sprite = close;
+        if (!isclose)
+        {
+            opendoor();
+        }
     }
 
     public void opendoor()

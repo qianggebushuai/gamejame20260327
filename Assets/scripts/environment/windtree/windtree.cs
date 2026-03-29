@@ -15,7 +15,7 @@ public class windtree : MonoBehaviour
 
     private SpriteRenderer sr;
     private Collider2D triggerCollider;
-    private bool hasGrown = false;
+    public bool hasGrown = false;
     public LayerMask whatisground;
     public float groundCheckDistance;
     public Rigidbody2D rb;
@@ -49,7 +49,7 @@ public class windtree : MonoBehaviour
             }
         }
 
-        if (growtime <= 0)
+        if (growtime <= 0&&isgrounddetected())
         {
             GrowUp();
         }

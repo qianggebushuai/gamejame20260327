@@ -23,7 +23,9 @@ public class itemobject : MonoBehaviour
             if (item != null)
             {
                 inventory.instance.AddItem(item);
+                Destroy(gameObject);
             }
+
         }
     }
 }

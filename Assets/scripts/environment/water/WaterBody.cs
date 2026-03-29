@@ -126,7 +126,6 @@ public class WaterBody : MonoBehaviour
 
     public void ChangeWaterLevelBy(float amount)
     {
-        // 将当前位置加上增量后，传入 MoveWaterToY 接受 Clamp 限制
         MoveWaterToY(transform.position.y + amount);
     }
 

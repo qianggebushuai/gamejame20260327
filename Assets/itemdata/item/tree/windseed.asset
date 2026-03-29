@@ -16,6 +16,6 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: c9abf2b1b855a81478e0bf49dc1fbf40, type: 3}
   itemtype: 0
   itemprefab: {fileID: 7198685564684144755, guid: d478116ea49bb714494fd6f76b9b1d7f, type: 3}
-  canStack: 0
+  canStack: 1
   maxStackSize: 64
   itemeffects: []

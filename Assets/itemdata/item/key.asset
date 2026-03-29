@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: key
   m_EditorClassIdentifier: 
   itemname: key
-  icon: {fileID: -987859485, guid: e362248218242e641904a56f6107da62, type: 3}
+  icon: {fileID: 21300000, guid: e75f4d49b2439e745b3cd1faecf11002, type: 3}
   itemtype: 0
   itemprefab: {fileID: 0}
   canStack: 0

@@ -13,7 +13,7 @@ public class itemdata : ScriptableObject
     public string itemname;
     public Sprite icon;
     public itemtype itemtype;
-
+    public GameObject itemprefab;
     [Header("堆叠设置")]
     public bool canStack = true;      // 是否可堆叠
     public int maxStackSize = 64;     // 最大堆叠数量

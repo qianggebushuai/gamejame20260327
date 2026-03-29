@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class inventory : MonoBehaviour
 {
@@ -67,7 +68,52 @@ public class inventory : MonoBehaviour
     }
 
     #endregion
+    #region 放置逻辑 
 
+
+    private void PlaceItem()
+    {
+        if (currentSelectedIndex < 0 || currentEquippedItem == null || currentEquippedItem.data == null)
+            return;
+
+        if (currentEquippedItem.data.itemprefab == null)
+        {
+            Debug.Log("[Inventory] 这个物品无法被放置。");
+            return;
+        }
+
+        // 2. 获取鼠标在屏幕上的位置，并转换为世界坐标
+        Vector3 mouseScreenPos = Input.mousePosition;
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+        // 由于是 2D 游戏，强制把 Z 轴归零，防止物体生成到摄像机后面导致看不见
+        mouseWorldPos.z = 0f;
+
+        // 3. 在鼠标位置生成物品预制体
+        Instantiate(currentEquippedItem.data.itemprefab, mouseWorldPos, Quaternion.identity);
+        Debug.Log($"[Inventory] 放置了: {currentEquippedItem.data.itemname}");
+
+        // 4. 扣减数量
+        currentEquippedItem.Removestack(1);
+
+        // 5. 如果数量归零，清理槽位并卸载装备
+        if (currentEquippedItem.stacksize <= 0)
+        {
+            // 记住当前索引
+            int slotToClear = currentSelectedIndex;
+
+            // 触发取消装备的特效并清空当前装备引用
+            UnequipCurrentItem();
+
+            // 彻底清空数据槽位
+            inventorySlots[slotToClear] = null;
+        }
+
+        // 6. 刷新界面 (更新数字和图标)
+        UpdateAllUI();
+    }
+
+    #endregion
     #region 初始化
 
     /// <summary>
@@ -146,20 +192,22 @@ public class inventory : MonoBehaviour
 
     private void HandleInput()
     {
-        // ESC / Tab / I 打开/关闭背包
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I))
         {
             ToggleInventory();
         }
 
-        // 只在背包关闭时允许使用快捷键
         if (!isInventoryOpen)
         {
             HandleHotbarInput();
             HandleScrollWheelInput();
+
+            if (Input.GetMouseButtonDown(1) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                PlaceItem();
+            }
         }
 
-        // Q 键丢弃当前选中物品（可选）
         if (Input.GetKeyDown(KeyCode.Q) && currentSelectedIndex >= 0)
         {
             // DropItem(currentSelectedIndex);
@@ -178,23 +226,18 @@ public class inventory : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 鼠标滚轮切换快捷栏
-    /// </summary>
     private void HandleScrollWheelInput()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         if (scroll > 0f)
         {
-            // 向上滚动 - 选择上一个
             int newIndex = currentSelectedIndex - 1;
             if (newIndex < 0) newIndex = hotbarSize - 1;
             SelectSlot(newIndex);
         }
         else if (scroll < 0f)
         {
-            // 向下滚动 - 选择下一个
             int newIndex = currentSelectedIndex + 1;
             if (newIndex >= hotbarSize) newIndex = 0;
             SelectSlot(newIndex);
@@ -202,6 +245,7 @@ public class inventory : MonoBehaviour
     }
 
     #endregion
+
 
     #region 背包开关
 

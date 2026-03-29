@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1159260494682335684}
   - component: {fileID: 6773111976528893942}
   - component: {fileID: 3236495019025218114}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: water
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,8 +148,11 @@ MonoBehaviour:
   waterBottomY: -3
   buoyancyStrength: 20
   surfaceFloatHeight: 0.3
-  waterRenderer: {fileID: 1159260494682335684}
+  cancomsumeo2whenswim: 1
   waterChangeSpeed: 2
+  maxYPosition: 10
+  minYPosition: -10
+  waterRenderer: {fileID: 1159260494682335684}
 --- !u!1 &6660371641484006820
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +162,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4364489582787028572}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}

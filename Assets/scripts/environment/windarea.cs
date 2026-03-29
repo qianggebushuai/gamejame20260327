@@ -69,9 +69,9 @@ public class windarea : MonoBehaviour
             {
                 originalGravityDict[player] = rb.gravityScale;
 
-                rb.gravityScale = 1f;
+                rb.gravityScale = 0.2f;
 
-                rb.velocity = new Vector2(rb.velocity.x, 1f);
+                rb.velocity = new Vector2(rb.velocity.x, 0.2f);
             }
 
             Debug.Log("检测到玩家进入，重力已设为 0");

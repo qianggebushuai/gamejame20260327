@@ -5,12 +5,14 @@ using UnityEngine;
 public class windarea : MonoBehaviour
 {
     [Header("风场设置")]
-    public winddir direction = winddir.right;  
-    public float windForce = 10f;             
+    public winddir direction = winddir.right;
+    public float windForce = 10f;
 
     public enum winddir { up, down, left, right };
-    public float rotation=0;
+
     private List<Player1> playersInArea = new List<Player1>();
+
+    private Dictionary<Player1, float> originalGravityDict = new Dictionary<Player1, float>();
 
     void Start()
     {
@@ -21,14 +23,13 @@ public class windarea : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
+        playersInArea.RemoveAll(p => p == null);
+
         foreach (Player1 player in playersInArea)
         {
-            if (player != null)
-            {
-                ApplyWind(player);
-            }
+            ApplyWind(player);
         }
     }
 
@@ -36,16 +37,11 @@ public class windarea : MonoBehaviour
     {
         switch (direction)
         {
-            case winddir.up:
-                return Vector2.up;
-            case winddir.down:
-                return Vector2.down;
-            case winddir.left:
-                return Vector2.left;
-            case winddir.right:
-                return Vector2.right;
-            default:
-                return Vector2.zero;
+            case winddir.up: return Vector2.up;
+            case winddir.down: return Vector2.down;
+            case winddir.left: return Vector2.left;
+            case winddir.right: return Vector2.right;
+            default: return Vector2.zero;
         }
     }
 
@@ -54,9 +50,10 @@ public class windarea : MonoBehaviour
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         if (rb != null)
         {
-            Vector2 windVelocity = (GetWindDirection() * rotation).normalized * windForce ;
-            Quaternion rotate = Quaternion.Euler(0, 0, rotation);
-            rb.velocity += windVelocity * Time.deltaTime;
+
+            Vector2 windVelocity = GetWindDirection() * windForce;
+
+            rb.AddForce(windVelocity, ForceMode2D.Force);
         }
     }
 
@@ -66,15 +63,36 @@ public class windarea : MonoBehaviour
         if (player != null && !playersInArea.Contains(player))
         {
             playersInArea.Add(player);
-            Debug.Log("检测到player");
+
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                originalGravityDict[player] = rb.gravityScale;
+
+                rb.gravityScale = 1f;
+
+                rb.velocity = new Vector2(rb.velocity.x, 1f);
+            }
+
+            Debug.Log("检测到玩家进入，重力已设为 0");
         }
     }
+
     private void OnTriggerExit2D(Collider2D other)
     {
         Player1 player = other.GetComponent<Player1>();
         if (player != null && playersInArea.Contains(player))
         {
             playersInArea.Remove(player);
+
+            Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
+            if (rb != null && originalGravityDict.ContainsKey(player))
+            {
+                rb.gravityScale = 8;
+
+                originalGravityDict.Remove(player);
+            }
+
         }
     }
 }

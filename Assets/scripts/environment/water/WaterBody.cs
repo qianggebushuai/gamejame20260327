@@ -10,6 +10,14 @@ public class WaterBody : MonoBehaviour
     [Header("水体属性")]
     public float buoyancyStrength = 20f;
     public float surfaceFloatHeight = 0.3f;
+    public bool cancomsumeo2whenswim = true;
+
+    [Header("水位升降与限制")]
+    public float waterChangeSpeed = 2f;
+    [Tooltip("水体 Transform.y 允许的最高世界坐标")]
+    public float maxYPosition = 10f;
+    [Tooltip("水体 Transform.y 允许的最低世界坐标")]
+    public float minYPosition = -10f;
 
     [Header("视觉与材质设置")]
     public SpriteRenderer waterRenderer;
@@ -22,18 +30,15 @@ public class WaterBody : MonoBehaviour
     private List<Rigidbody2D> objectsInWater = new List<Rigidbody2D>();
     private BoxCollider2D waterCollider;
 
-    // 水位动态升降控制
-    public float waterChangeSpeed = 2f;
+    // 内部运行状态
     private bool isChangingLevel = false;
     private float targetWorldY;
-    public bool cancomsumeo2whenswim=true;
 
     void Start()
     {
         waterCollider = GetComponent<BoxCollider2D>();
         waterCollider.isTrigger = true;
 
-        // 获取实例化的材质，并读取Shader中的初始数据
         if (waterRenderer != null)
         {
             waterMat = waterRenderer.material;
@@ -41,14 +46,6 @@ public class WaterBody : MonoBehaviour
         }
 
         UpdateWaterBounds();
-    }
-
-    void Update()
-    {
-        // 如果你在编辑器里经常调节材质波浪参数，取消下一行的注释以便实时预览
-        // #if UNITY_EDITOR
-        // SyncWaveProperties();
-        // #endif
     }
 
     void FixedUpdate()
@@ -85,7 +82,7 @@ public class WaterBody : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"WaterBody: Material '{waterMat.name}' 的 Shader '{waterMat.shader.name}' 缺少波浪属性，跳过同步，将使用脚本默认值。");
+                Debug.LogWarning($"WaterBody: Material '{waterMat.name}' 的 Shader 缺少波浪属性，跳过同步。");
             }
         }
     }
@@ -94,7 +91,6 @@ public class WaterBody : MonoBehaviour
     {
         if (waterCollider != null)
         {
-            // 基础最高点（不受波浪影响的水平面）
             waterSurfaceY = waterCollider.bounds.max.y;
             waterBottomY = waterCollider.bounds.min.y;
         }
@@ -102,55 +98,59 @@ public class WaterBody : MonoBehaviour
 
     // ================= 核心：动态波浪水面计算 =================
 
-    /// <summary>
-    /// 获取特定 X 坐标下的波浪水面高度
-    /// </summary>
-    /// <param name="worldXPosition">查询者的世界X坐标</param>
     public float GetWaterSurfaceY(float worldXPosition)
     {
-        float baseSurfaceY = waterCollider.bounds.max.y;
+        float baseSurfaceY = waterCollider != null ? waterCollider.bounds.max.y : transform.position.y;
 
-        // 如果没有材质或者波幅为0，直接返回平滑水面
         if (waterMat == null || waveAmplitude == 0) return baseSurfaceY;
 
-        // 1. 将世界的X坐标转为水体的本地X坐标（因为Shader用的是 v.vertex.x）
         float localX = transform.InverseTransformPoint(new Vector3(worldXPosition, 0, 0)).x;
-
-        // 2. C# 复刻 Shader 算法: wave = sin((x * freq) + (time * speed)) * amp
-        // 注意：Unity Shader 中的 _Time.y 等同于 C# 中的 Time.time
         float waveOffsetLocal = Mathf.Sin((localX * waveFrequency) + (Time.time * waveSpeed)) * waveAmplitude;
-
-        // 3. 将本地的波动高度乘以水体本身的 Y 轴缩放，还原到世界空间的高低变化
         float waveOffsetWorld = waveOffsetLocal * transform.lossyScale.y;
 
-        // 返回基础高度 + 波浪偏移高度
         return baseSurfaceY + waveOffsetWorld;
     }
 
-    // ==========================================================
-
-    private void HandleWaterLevelChange()
-    {
-        float step = waterChangeSpeed * Time.fixedDeltaTime;
-        Vector3 newPos = transform.position;
-        newPos.y = Mathf.MoveTowards(transform.position.y, targetWorldY, step);
-        transform.position = newPos;
-
-        if (Mathf.Abs(transform.position.y - targetWorldY) < 0.01f)
-            isChangingLevel = false;
-    }
+    // ================= 水位升降与限制逻辑 =================
 
     public void MoveWaterToY(float targetY, float customSpeed = -1f)
     {
-        targetWorldY = targetY;
+        // 【核心修改】：在设定目标时，使用 Mathf.Clamp 强制将目标限制在 min 和 max 之间
+        // 这样无论是接收机关信号、瀑布水滴还是持续按键，水面永远不会超出你规定的界限
+        targetWorldY = Mathf.Clamp(targetY, minYPosition, maxYPosition);
+
         if (customSpeed > 0) waterChangeSpeed = customSpeed;
+
         isChangingLevel = true;
     }
 
     public void ChangeWaterLevelBy(float amount)
     {
+        // 将当前位置加上增量后，传入 MoveWaterToY 接受 Clamp 限制
         MoveWaterToY(transform.position.y + amount);
     }
+
+    private void HandleWaterLevelChange()
+    {
+        float step = waterChangeSpeed * Time.fixedDeltaTime;
+        Vector3 newPos = transform.position;
+
+        // 平滑移动向被 Clamp 过的安全目标值
+        newPos.y = Mathf.MoveTowards(transform.position.y, targetWorldY, step);
+
+        // 双重保险：确保实际坐标也绝对不会越界
+        newPos.y = Mathf.Clamp(newPos.y, minYPosition, maxYPosition);
+
+        transform.position = newPos;
+
+        // 因为目标值已经是合法的，所以只需判断是否到达目标即可
+        if (Mathf.Abs(transform.position.y - targetWorldY) < 0.01f)
+        {
+            isChangingLevel = false;
+        }
+    }
+
+    // ================= 物理浮力逻辑 =================
 
     void ApplyBuoyancy(Rigidbody2D rb)
     {
@@ -188,5 +188,21 @@ public class WaterBody : MonoBehaviour
     {
         Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
         if (rb != null) objectsInWater.Remove(rb);
+    }
+
+    // ================= 编辑器辅助可视化 =================
+
+    /// <summary>
+    /// 当在 Unity 编辑器中选中该水体时，画出高度限制的辅助线
+    /// </summary>
+    private void OnDrawGizmosSelected()
+    {
+        // 画出允许的最高位置 (红线)
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(transform.position.x - 5f, maxYPosition, 0), new Vector3(transform.position.x + 5f, maxYPosition, 0));
+
+        // 画出允许的最低位置 (蓝线)
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(new Vector3(transform.position.x - 5f, minYPosition, 0), new Vector3(transform.position.x + 5f, minYPosition, 0));
     }
 }

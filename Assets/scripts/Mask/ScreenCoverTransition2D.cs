@@ -103,7 +103,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
     {
         if ((currentState == State.Idle || currentState == State.Covered) && player != null)
         {
-            Vector3 playerPos = player.transform.position;
+            Vector3 playerPos = mainCamera.transform.position;
             playerPos.z = transform.position.z;
             transform.position = playerPos;
         }

@@ -41,10 +41,9 @@ public class itemobject : MonoBehaviour
 
     private void CollectItem()
     {
-        if (item != null)
-        {
-            inventory.instance.AddItem(item);
-        }
+
+
+        inventory.instance.AddItem(item);
 
         if (isCollectible)
         {

@@ -26,7 +26,7 @@ public class inventory : MonoBehaviour
     [SerializeField] private Transform hotbarSlotsParent;
     [SerializeField] private Transform inventorySlotsParent;
 
-    public inventoryitem[] inventorySlots;
+    private inventoryitem[] inventorySlots;
 
     public int currentSelectedIndex { get; private set; } = -1;
     public inventoryitem currentEquippedItem { get; private set; }
@@ -41,6 +41,12 @@ public class inventory : MonoBehaviour
 
     private void Awake()
     {
+
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);  // 销毁重复的
+            return;
+        }
 
         instance = this;
         DontDestroyOnLoad(gameObject);
@@ -288,7 +294,22 @@ public class inventory : MonoBehaviour
 
     public bool AddItem(itemdata item, int amount = 1)
     {
-        if (item == null) return false;
+        if (item == null)
+        {
+            Debug.LogError("[Inventory] 传入的 item 为 null!");
+            return false;
+        }
+
+        // ★ 加入调试信息
+        Debug.Log($"[Inventory] 尝试添加: {item.itemname} x{amount}");
+        Debug.Log($"[Inventory] inventorySlots 是否为null: {inventorySlots == null}");
+        Debug.Log($"[Inventory] inventorySlots 长度: {inventorySlots?.Length}");
+
+        // 打印所有槽位状态
+        for (int i = 0; i < TotalSize; i++)
+        {
+            Debug.Log($"[Inventory] 槽位[{i}] = {(inventorySlots[i] == null ? "空" : inventorySlots[i].data?.itemname)}");
+        }
 
         int remaining = amount;
 
@@ -303,14 +324,17 @@ public class inventory : MonoBehaviour
         }
 
         remaining = TryAddToEmptySlots(item, remaining, 0, hotbarSize);
+        Debug.Log($"[Inventory] 快捷栏尝试后 remaining = {remaining}");
+
         if (remaining <= 0)
         {
             UpdateAllUI();
             return true;
         }
 
-        // 3. 尝试添加到背包空槽位
         remaining = TryAddToEmptySlots(item, remaining, hotbarSize, TotalSize);
+        Debug.Log($"[Inventory] 背包尝试后 remaining = {remaining}");
+
         if (remaining <= 0)
         {
             UpdateAllUI();
@@ -319,16 +343,13 @@ public class inventory : MonoBehaviour
 
         if (remaining < amount)
         {
-            // 部分添加成功
             UpdateAllUI();
-            Debug.Log($"[Inventory] 背包空间不足，只添加了 {amount - remaining}/{amount} 个 {item.itemname}");
             return true;
         }
 
-        Debug.Log("[Inventory] 背包已满，无法添加物品");
+        Debug.LogError("[Inventory] 背包已满，无法添加物品");
         return false;
     }
-
     private int TryStackToExisting(itemdata item, int amount)
     {
         int remaining = amount;

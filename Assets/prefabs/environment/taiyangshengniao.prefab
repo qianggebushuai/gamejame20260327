@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 1634480010678618484}
   - component: {fileID: 5861612621158386433}
   - component: {fileID: 1147865527851336573}
+  - component: {fileID: -233183162743007935}
   m_Layer: 0
   m_Name: taiyangshengniao
   m_TagString: Untagged
@@ -204,6 +205,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 7ec55e756bd1b9742878247bb87ddaf2, type: 2}
   cc: {fileID: 4436047408626557300}
+  isCollectible: 0
+  collectibleIndex: 0
+  collectEffect: {fileID: 0}
+  collectSound: {fileID: 0}
 --- !u!50 &1147865527851336573
 Rigidbody2D:
   serializedVersion: 4
@@ -231,3 +236,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-233183162743007935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601708586405363094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfaa3cd8dca481444a931523525a4641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcId: 

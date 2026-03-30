@@ -212,10 +212,6 @@ public class FinalAltar : MonoBehaviour
             blackScreenCanvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / fadeToBlackDuration);
             yield return null;
         }
-        for (int i = 0; i < inventory.instance.inventorySlots.Length; i++)
-        {
-            inventory.instance.inventorySlots[i]=null;
-        }
 
         timecontroller.instance.currentTime = timecontroller.instance.totalTime;
 

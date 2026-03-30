@@ -210,6 +210,7 @@ public class FinalAltar : MonoBehaviour
         {
             DialogueManager.Instance.StartDialogueWithNPC("43");
         }
+        yield return new WaitForSeconds(5f);
         if (blackScreenObject == null || blackScreenCanvasGroup == null)
         {
             Debug.LogWarning("[FinalAltar] 未设置黑屏物体或 CanvasGroup，跳过渐黑效果。");

@@ -60,6 +60,7 @@ public class ScreenCoverTransition2D : MonoBehaviour
     GameObject player;
     private void Awake()
     {
+        
         instance = this;
     }
     void Start()
@@ -83,6 +84,8 @@ public class ScreenCoverTransition2D : MonoBehaviour
         spriteRenderer.enabled = false;
         transform.localScale = Vector3.one * 0.01f;
         currentState = State.Idle;
+        MusicManager.Instance.FadeVolume("winter", 0f, 2f);
+        MusicManager.Instance.FadeVolume("summer", 1f, 2f);
     }
 
     void CalculateScreenBounds()
@@ -119,6 +122,9 @@ public class ScreenCoverTransition2D : MonoBehaviour
         }
 
         CheckInput();
+
+        
+
     }
 
     void CheckInput()
@@ -141,10 +147,14 @@ public class ScreenCoverTransition2D : MonoBehaviour
         if (currentState == State.Idle)
         {
             StartHighlightThenOpen(Mode.Mode1);
+            MusicManager.Instance.FadeVolume("winter", 1f, 2f);
+            MusicManager.Instance.FadeVolume("summer", 0f, 2f);
         }
         else if (currentState == State.Covered)
         {
             StartHighlightThenClose(Mode.Mode1);
+            MusicManager.Instance.FadeVolume("winter", 0f, 2f);
+            MusicManager.Instance.FadeVolume("summer", 1f, 2f);
         }
     }
 

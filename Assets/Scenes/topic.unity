@@ -964,6 +964,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1019889855
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1019889857}
+  - component: {fileID: 1019889856}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1019889856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019889855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f092dd88543cb4cbfcfbf5d18a3474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1019889857
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019889855}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 800.6416, y: 363.3309, z: -3.1774945}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1181866015
 GameObject:
   m_ObjectHideFlags: 0
@@ -1094,36 +1138,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1361680197}
-  - component: {fileID: 1361680196}
+  - component: {fileID: 1361680198}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: MusicManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1361680196
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361680195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78b0b64c83e4c154cbef9bc5de84edc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
-  musicVolume: 0.5
-  sfxSource: {fileID: 0}
-  sfxVolume: 0.8
-  buttonClickSFX: {fileID: 0}
-  shootSFX: {fileID: 0}
-  reloadSFX: {fileID: 0}
-  emptyClipSFX: {fileID: 0}
-  playerHurtSFX: {fileID: 0}
-  victoryMusic: {fileID: 0}
 --- !u!4 &1361680197
 Transform:
   m_ObjectHideFlags: 0
@@ -1139,6 +1161,45 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1361680198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361680195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f9d48a4439c724083bcdd0e24eedf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  preconfiguredTracks:
+  - trackId: zhujiemian
+    clip: {fileID: 8300000, guid: 05e65ccfac72a614284e5e4faa46d4db, type: 3}
+    loop: 1
+    volume: 1
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: basic
+    clip: {fileID: 8300000, guid: edb6f93feb0cf834b966deb9f9ecfb00, type: 3}
+    loop: 1
+    volume: 1
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: summer
+    clip: {fileID: 8300000, guid: abd3643664acacf41acebf6e7cb967e4, type: 3}
+    loop: 1
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: winter
+    clip: {fileID: 8300000, guid: ebcba42a8245ec2498921b3b45bf77d3, type: 3}
+    loop: 1
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  masterVolume: 1
+  persistAcrossScenes: 1
 --- !u!1 &1409434774
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,3 +1686,4 @@ SceneRoots:
   - {fileID: 922240183}
   - {fileID: 818305076}
   - {fileID: 1361680197}
+  - {fileID: 1019889857}

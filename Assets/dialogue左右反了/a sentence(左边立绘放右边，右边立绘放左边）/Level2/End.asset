@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
+  m_Name: End
+  m_EditorClassIdentifier: 
+  dialogueId: 20
+  description: "\u901A\u5173\u65F6\uFF0C\u70DB\u9F99\u8BF4"
+  npcId: 
+  priority: 0
+  condition:
+    targetNPCId: 
+    minTalkCount: 0
+    maxTalkCount: 2147483647
+    requiredItems: []
+    requiredFlags: []
+    excludeFlags: []
+  actionsOnComplete: []
+  lines:
+  - speakerName: 
+    speakerPortrait: {fileID: 0}
+    leftPortrait: {fileID: 0}
+    rightPortrait: {fileID: 0}
+    activeSide: 0
+    content: "\u5316\u9006\u98CE\u4E3A\u6258\u4E3E\u4E4B\u529B\u2026\u2026\u987A\u5E94\u8282\u5F8B\uFF0C\u4FBF\u662F\u6700\u597D\u7684\u5FA1\u4E0B\u4E4B\u7406\u3002\u201D\r\n"
+    animationTrigger: 

@@ -69,7 +69,7 @@ public class DialogueManager : MonoBehaviour
 
     private Dialogue currentDialogue;
     private int currentLineIndex;
-    private bool isDialogueActive = false;
+    public bool isDialogueActive = false;
     private bool isTyping = false;
     private bool skipTyping = false;
     private Coroutine typewriterCoroutine;
@@ -228,7 +228,7 @@ public class DialogueManager : MonoBehaviour
         OnLineDisplayed?.Invoke(line);
     }
 
-    private void DisplayNextLine()
+    public void DisplayNextLine()
     {
         currentLineIndex++;
 
@@ -247,16 +247,13 @@ public class DialogueManager : MonoBehaviour
         isDialogueActive = false;
         isTyping = false;
 
-        // 执行对话完成后的操作
         ExecuteDialogueActions();
 
-        // 自动增加对话次数
         if (!string.IsNullOrEmpty(currentDialogue.npcId))
         {
             GameDialogControl.Instance.IncrementTalkCount(currentDialogue.npcId);
         }
 
-        // 隐藏UI
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
 

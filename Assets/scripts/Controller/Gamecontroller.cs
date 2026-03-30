@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // ∑«÷ÿ÷√≥°æ∞
         if (instance != null && instance != this)
         {
             Destroy(gameObject);

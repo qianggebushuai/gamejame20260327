@@ -26,7 +26,7 @@ public class inventory : MonoBehaviour
     [SerializeField] private Transform hotbarSlotsParent;
     [SerializeField] private Transform inventorySlotsParent;
 
-    private inventoryitem[] inventorySlots;
+    public inventoryitem[] inventorySlots;
 
     public int currentSelectedIndex { get; private set; } = -1;
     public inventoryitem currentEquippedItem { get; private set; }
@@ -41,21 +41,6 @@ public class inventory : MonoBehaviour
 
     private void Awake()
     {
-        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-
-        // 如果是 topic 场景，销毁旧实例
-        if (currentScene == resetSceneName)
-        {
-            if (instance != null && instance != this)
-            {
-                Debug.Log($"[Inventory] 进入 {resetSceneName} 场景，销毁旧的 Inventory");
-                inventorySlots = null;
-                Destroy(instance.gameObject);
-                instance = null;
-            }
-        }
-
-        // 标准单例逻辑
         if (instance != null && instance != this)
         {
             Destroy(gameObject);

@@ -135,6 +135,19 @@ public class Player1 : entity
     {
         anim.SetBool("Dieway",isdiedofswim);
         recoveroxegen();
+        if (DialogueManager.Instance != null)
+        {
+            if (DialogueManager.Instance.isDialogueActive)
+            {
+                if (statemachine.currentstate != idlestate)
+                {
+                    statemachine.changestate(idlestate);
+                }
+
+                return;
+            }
+        }
+
         if (ctl == null)
         {
             ctl = GameObject.FindGameObjectWithTag("ctl").GetComponent<ScreenCoverTransition2D>();

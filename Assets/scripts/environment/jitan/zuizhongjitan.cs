@@ -204,8 +204,7 @@ public class FinalAltar : MonoBehaviour
         blackScreenCanvasGroup.alpha = 0f;
         blackScreenObject.SetActive(true);
         blackScreenCanvasGroup.blocksRaycasts = true; // 阻止玩家操作
-
-        // 逐渐变黑
+        
         float timer = 0f;
         while (timer < fadeToBlackDuration)
         {
@@ -213,6 +212,13 @@ public class FinalAltar : MonoBehaviour
             blackScreenCanvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / fadeToBlackDuration);
             yield return null;
         }
+        for (int i = 0; i < inventory.instance.inventorySlots.Length; i++)
+        {
+            inventory.instance.inventorySlots[i]=null;
+        }
+
+        timecontroller.instance.currentTime = timecontroller.instance.totalTime;
+
 
         blackScreenCanvasGroup.alpha = 1f;
         Debug.Log("[FinalAltar] 屏幕已完全变黑");

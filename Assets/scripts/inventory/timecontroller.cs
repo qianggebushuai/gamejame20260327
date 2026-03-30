@@ -20,7 +20,7 @@ public class timecontroller : MonoBehaviour
 
     [Header("倒计时设置")]
     public float totalTime = 60f;
-    private float currentTime;
+    public float currentTime;
     public bool isCountingDown = false;
 
     // 【修改】将时间改为 int 类型，避免浮点数四舍五入导致的显示错误

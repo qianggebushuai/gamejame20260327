@@ -7,29 +7,29 @@ public class inventory : MonoBehaviour
 {
     public static inventory instance;
 
+    [Header("重置设置")]
+    [SerializeField] private string resetSceneName = "topic";
+
     [Header("初始物品")]
     public List<itemdata> startingItems;
 
     [Header("背包设置")]
-    [SerializeField] private int hotbarSize = 9;       // 快捷栏大小
-    [SerializeField] private int inventorySize = 27;   // 背包大小
-    public int TotalSize => hotbarSize + inventorySize; // 总大小 = 36
+    [SerializeField] private int hotbarSize = 9;
+    [SerializeField] private int inventorySize = 27;
+    public int TotalSize => hotbarSize + inventorySize;
 
     [Header("UI 面板")]
-    [SerializeField] private GameObject inventoryPanel;    // 背包面板（ESC打开）
-    [SerializeField] private GameObject hotbarPanel;       // 快捷栏面板（始终可见）
+    [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private GameObject hotbarPanel;
 
     [Header("槽位父容器")]
-    [SerializeField] private Transform hotbarSlotsParent;     // 快捷栏槽位容器
-    [SerializeField] private Transform inventorySlotsParent;  // 背包槽位容器
+    [SerializeField] private Transform hotbarSlotsParent;
+    [SerializeField] private Transform inventorySlotsParent;
 
     private inventoryitem[] inventorySlots;
 
     public int currentSelectedIndex { get; private set; } = -1;
-
-    // 当前装备的物品
     public inventoryitem currentEquippedItem { get; private set; }
-
 
     private InventorySlotUI[] hotbarSlotUIs;
     private InventorySlotUI[] inventorySlotUIs;
@@ -41,16 +41,29 @@ public class inventory : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+        // 如果是 topic 场景，销毁旧实例
+        if (currentScene == resetSceneName)
         {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (instance != null && instance != this)
+            {
+                Debug.Log($"[Inventory] 进入 {resetSceneName} 场景，销毁旧的 Inventory");
+                inventorySlots = null;
+                Destroy(instance.gameObject);
+                instance = null;
+            }
         }
-        else
+
+        // 标准单例逻辑
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -68,6 +81,7 @@ public class inventory : MonoBehaviour
     }
 
     #endregion
+
     #region 放置逻辑 
 
 

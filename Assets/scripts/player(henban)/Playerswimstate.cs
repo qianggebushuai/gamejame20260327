@@ -35,7 +35,6 @@ public class Playerswimstate : Playerstate
         player.rb.drag = normalDrag;
         player.candash = true;
         player.candoublejump = true;
-        player.currentoxegenvalue = player.maxoxegenvalue;
         Debug.Log("ÍË³öÓÎÓ¾×´Ì¬");
     }
 

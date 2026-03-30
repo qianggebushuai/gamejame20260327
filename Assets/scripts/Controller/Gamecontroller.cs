@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("重置设置")]
+    [SerializeField] private string resetSceneName = "topic";
+
     [Header("重生设置")]
     public Dictionary<string, Vector3> sceneRespawnPoints = new Dictionary<string, Vector3>();
 
@@ -20,18 +23,36 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        // 如果是重置场景
+        if (currentScene == resetSceneName)
         {
+            if (instance != null && instance != this)
+            {
+                Debug.Log($"[GameManager] 进入 {resetSceneName}，销毁旧 GameManager");
+
+                SceneManager.sceneLoaded -= instance.OnSceneLoaded;
+
+                DestroyImmediate(instance.gameObject);
+                instance = null;
+            }
+
             instance = this;
             DontDestroyOnLoad(gameObject);
+            return;
         }
-        else
+
+        // 非重置场景
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
             return;
         }
-    }
 
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
     void Start()
     {
         FindPlayer();
@@ -41,13 +62,36 @@ public class GameManager : MonoBehaviour
 
     void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        // 只有当销毁的是当前实例时才取消订阅
+        if (instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"[GameManager] 场景加载: {scene.name}");
+
+        // 检查是否进入重置场景
+        if (scene.name == resetSceneName)
+        {
+            ResetGameState();
+        }
+
         FindPlayer();
         SaveCurrentSceneRespawnPoint();
+    }
+
+    /// <summary>
+    /// 重置游戏状态
+    /// </summary>
+    private void ResetGameState()
+    {
+        lives = 3;
+        isGameOver = false;
+        sceneRespawnPoints.Clear();
+        Debug.Log("[GameManager] 游戏状态已重置");
     }
 
     private void FindPlayer()

@@ -134,6 +134,7 @@ public class Player1 : entity
     protected override void Update()
     {
         anim.SetBool("Dieway",isdiedofswim);
+        recoveroxegen();
         if (ctl == null)
         {
             ctl = GameObject.FindGameObjectWithTag("ctl").GetComponent<ScreenCoverTransition2D>();
@@ -173,10 +174,6 @@ public class Player1 : entity
             if (currentoxegenvalue < maxoxegenvalue)
             {
                 currentoxegenvalue += Time.deltaTime;
-            }
-            else
-            {
-                currentoxegenvalue = maxoxegenvalue;
             }
         }
 

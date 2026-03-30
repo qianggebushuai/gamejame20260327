@@ -495,6 +495,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5861612621158386433, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
+      propertyPath: collectibleIndex
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6601708586405363094, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
       propertyPath: m_Name
       value: taiyangshengniao (2)
@@ -1948,6 +1952,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 2
   windForce: 20
+  particlePrefab: {fileID: 7541630017611689105, guid: b322fe384d91fe24fa4b46b03e5542e9, type: 3}
+  spawnInterval: 0.05
+  particlesPerSpawn: 3
+  particleLifetime: 2
+  particleSpeed: 5
+  particleSpeedVariation: 1
+  enableParticles: 1
 --- !u!61 &449040372
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -110405,6 +110416,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5861612621158386433, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
+      propertyPath: isCollectible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5861612621158386433, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
+      propertyPath: collectibleIndex
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6601708586405363094, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
       propertyPath: m_Name
       value: taiyangshengniao
@@ -111080,6 +111099,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 0
   windForce: 20
+  particlePrefab: {fileID: 7541630017611689105, guid: b322fe384d91fe24fa4b46b03e5542e9, type: 3}
+  spawnInterval: 0.05
+  particlesPerSpawn: 3
+  particleLifetime: 2
+  particleSpeed: 5
+  particleSpeedVariation: 1
+  enableParticles: 1
 --- !u!61 &1356977080
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -111848,6 +111874,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5861612621158386433, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
+      propertyPath: isCollectible
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5861612621158386433, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
+      propertyPath: collectibleIndex
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6601708586405363094, guid: 8d06f6fdcbb4cbc47957f1febbd58d6f, type: 3}
       propertyPath: m_Name
       value: taiyangshengniao (1)
@@ -112220,6 +112254,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 2
   windForce: 20
+  particlePrefab: {fileID: 7541630017611689105, guid: b322fe384d91fe24fa4b46b03e5542e9, type: 3}
+  spawnInterval: 0.05
+  particlesPerSpawn: 3
+  particleLifetime: 2
+  particleSpeed: 5
+  particleSpeedVariation: 1
+  enableParticles: 1
 --- !u!61 &2003164828
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112428,6 +112469,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: 2
   windForce: 20
+  particlePrefab: {fileID: 7541630017611689105, guid: b322fe384d91fe24fa4b46b03e5542e9, type: 3}
+  spawnInterval: 0.05
+  particlesPerSpawn: 3
+  particleLifetime: 2
+  particleSpeed: 5
+  particleSpeedVariation: 1
+  enableParticles: 1
 --- !u!61 &2006522679
 BoxCollider2D:
   m_ObjectHideFlags: 0

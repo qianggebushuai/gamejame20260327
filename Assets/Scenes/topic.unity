@@ -1778,6 +1778,90 @@ MonoBehaviour:
     volume: 0
     playOnStart: 0
     fadeInDuration: 0
+  - trackId: waterfall
+    clip: {fileID: 8300000, guid: d5acfd68f5286ef47b218f85f2b891e6, type: 3}
+    loop: 1
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: wind
+    clip: {fileID: 8300000, guid: 7631fc2be6ba4394790ea76d8497d224, type: 3}
+    loop: 1
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: change
+    clip: {fileID: 8300000, guid: 51186847b4222fe4fb9a1ece46c8dab3, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: door
+    clip: {fileID: 8300000, guid: db2de65ca517bf94b97a86e78c846b3a, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: freeze
+    clip: {fileID: 8300000, guid: 2290e6279ccd02b42881d1cfc0d7bf42, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: fusang
+    clip: {fileID: 8300000, guid: e2f9bfe846e101c4496d4036a617e31e, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: step1
+    clip: {fileID: 8300000, guid: 3c5a4563860789f46a5e59ff14304858, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: step2
+    clip: {fileID: 8300000, guid: 1f9a01146d8505b4eabfe445b3e8922a, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: step3
+    clip: {fileID: 8300000, guid: c0f9117ba844e3147b86cb9004114c2f, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: step4
+    clip: {fileID: 8300000, guid: 121712ac2b8547641adfc78b935f5e42, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: swim1
+    clip: {fileID: 8300000, guid: a1ba6f4b6b0f24d45800e98222bd680a, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: swim2
+    clip: {fileID: 8300000, guid: 70a9a94fde5faf84796505313ce66a2a, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: tree
+    clip: {fileID: 8300000, guid: 7ca6ea4140ceb2c408093d35e08bed92, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
+  - trackId: water
+    clip: {fileID: 8300000, guid: 574c69af922192843af24d5c435bd77d, type: 3}
+    loop: 0
+    volume: 0
+    playOnStart: 0
+    fadeInDuration: 0
   masterVolume: 1
   persistAcrossScenes: 1
 --- !u!1 &1362677214

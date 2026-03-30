@@ -194,6 +194,22 @@ public class FinalAltar : MonoBehaviour
 
     private IEnumerator FadeToBlack()
     {
+        bool end=true;
+        for (int i = 0; i <10 ; i++)
+        {
+            if (!BoolManager.Instance.GetBool(i))
+            {
+                end = false;break;
+            }
+        }
+        if (end)
+        {
+            DialogueManager.Instance.StartDialogueWithNPC("42");
+        }
+        else
+        {
+            DialogueManager.Instance.StartDialogueWithNPC("43");
+        }
         if (blackScreenObject == null || blackScreenCanvasGroup == null)
         {
             Debug.LogWarning("[FinalAltar] 未设置黑屏物体或 CanvasGroup，跳过渐黑效果。");

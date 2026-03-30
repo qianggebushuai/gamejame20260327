@@ -30,10 +30,13 @@ public class waterdrop : MonoBehaviour
             player.causedamage();
         }
         if (collision.tag=="tree")
-        {
-            if (collision.GetComponent<windtree>().hasGrown==true|| collision.GetComponent<icetree>().hasGrown == true)
-            {
-                Destroy(gameObject);
+        { 
+            if(collision.GetComponent<windtree>()==true|| collision.GetComponent<icetree>() == true){
+                if (collision.GetComponent<windtree>().hasGrown == true || collision.GetComponent<icetree>().hasGrown == true)
+                {
+                    Destroy(gameObject);
+                }
+
             }
 
         }

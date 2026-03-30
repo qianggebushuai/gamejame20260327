@@ -6,11 +6,18 @@ public class CommonDialogueTrigger : MonoBehaviour
 {
     [Header("NPC±Í ∂")]
     public string npcId;
+    public int max = 2;
+    public int now = 1;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.tag== "Player")
         {
-            TriggerDialogue();
+            if (now < max)
+            {
+                TriggerDialogue();
+                now++;
+            }
+
         }
 
     }

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
+  m_Name: Bird10
+  m_EditorClassIdentifier: 
+  dialogueId: 12
+  description: "\u592A\u9633\u795E\u9E1F\u8BF4"
+  npcId: 
+  priority: 0
+  condition:
+    targetNPCId: 
+    minTalkCount: 0
+    maxTalkCount: 2147483647
+    requiredItems: []
+    requiredFlags: []
+    excludeFlags: []
+  actionsOnComplete: []
+  lines:
+  - speakerName: 
+    speakerPortrait: {fileID: 0}
+    leftPortrait: {fileID: 0}
+    rightPortrait: {fileID: 0}
+    activeSide: 0
+    content: "\u300C\u7406\u6C34\u5FA1\u98CE\uFF0C\u91CD\u5851\u56DB\u65F6\u3002\u5F53\u91D1\u4E4C\u91CD\u8FD4\u679D\u5934\uFF0C\u8FD9\u7247\u5929\u5730\u7684\u6B8B\u5C40\uFF0C\u7EC8\u88AB\u300E\u7EDF\u7B79\u300F\u4E3A\u65E0\u5C3D\u7684\u751F\u673A\u3002\u300D"
+    animationTrigger: 

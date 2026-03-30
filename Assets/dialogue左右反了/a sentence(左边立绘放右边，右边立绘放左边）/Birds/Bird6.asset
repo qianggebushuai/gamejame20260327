@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
+  m_Name: Bird6
+  m_EditorClassIdentifier: 
+  dialogueId: 8
+  description: "\u592A\u9633\u795E\u9E1F\u8BF4"
+  npcId: 
+  priority: 0
+  condition:
+    targetNPCId: 
+    minTalkCount: 0
+    maxTalkCount: 2147483647
+    requiredItems: []
+    requiredFlags: []
+    excludeFlags: []
+  actionsOnComplete: []
+  lines:
+  - speakerName: 
+    speakerPortrait: {fileID: 0}
+    leftPortrait: {fileID: 0}
+    rightPortrait: {fileID: 0}
+    activeSide: 0
+    content: "\u300C\u6CC9\u5C01\u5219\u6C34\u6B7B\uFF0C\u6C34\u6B7B\u5219\u51B0\u7ED3\u3002\u6C14\u8109\u4E0D\u901A\uFF0C\u5219\u51DB\u51AC\u4E0D\u9000\u3002\u9006\u5929\u7406\u8005\uFF0C\u5FC5\u9677\u957F\u5BD2\u3002\u300D\r\n"
+    animationTrigger: 

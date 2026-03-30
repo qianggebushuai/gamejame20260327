@@ -1,34 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
-  m_Name: Bird8
-  m_EditorClassIdentifier: 
-  dialogueId: 10
-  description: "\u592A\u9633\u795E\u9E1F\u8BF4"
-  npcId: 
-  priority: 0
-  condition:
-    targetNPCId: 
-    minTalkCount: 0
-    maxTalkCount: 2147483647
-    requiredItems: []
-    requiredFlags: []
-    excludeFlags: []
-  actionsOnComplete: []
-  lines:
-  - speakerName: 
-    speakerPortrait: {fileID: 0}
-    leftPortrait: {fileID: 0}
-    rightPortrait: {fileID: 0}
-    activeSide: 0
-    content: "\u6276\u6851\u503E\u5012\u4E4B\u65E5\uFF0C\u5341\u53EA\u91D1\u4E4C\u6CE3\u8840\u81EA\u711A\u3002\u5B83\u4EEC\u5B81\u5316\u4F5C\u6F2B\u5929\u788E\u5F71\uFF0C\u4E5F\u4E0D\u5C48\u4ECE\u865A\u5047\u7684\u79E9\u5E8F\u3002\r\n"
-    animationTrigger: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:47035eec108b3da4587b0e1aff82122c2f3f642d73996c548f4c35af06d61573
+size 1050

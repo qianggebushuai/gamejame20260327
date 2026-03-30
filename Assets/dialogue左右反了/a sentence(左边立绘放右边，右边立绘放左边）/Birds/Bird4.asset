@@ -1,34 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
-  m_Name: Bird4
-  m_EditorClassIdentifier: 
-  dialogueId: 6
-  description: "\u592A\u9633\u795E\u9E1F\u8BF4"
-  npcId: 
-  priority: 0
-  condition:
-    targetNPCId: 
-    minTalkCount: 0
-    maxTalkCount: 2147483647
-    requiredItems: []
-    requiredFlags: []
-    excludeFlags: []
-  actionsOnComplete: []
-  lines:
-  - speakerName: 
-    speakerPortrait: {fileID: 0}
-    leftPortrait: {fileID: 0}
-    rightPortrait: {fileID: 0}
-    activeSide: 0
-    content: " \u6811\u672C\u4E3A\u5FA1\u98CE\u4E4B\u7F30\u3002\u65A9\u5C3D\u8700\u5C71\u4E4B\u6839\uFF0C\u4FBF\u653E\u51FA\u4E86\u5403\u4EBA\u7684\u72C2\u6C99\u3002\u5F3A\u593A\u5929\u5DE5\uFF0C\u7EC8\u53D7\u5176\u566C\u3002\r\n"
-    animationTrigger: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:76a48b3d06f9114a1abbe99728277aeb1e93ecf7fbce96c16a927e0df9717d35
+size 1044

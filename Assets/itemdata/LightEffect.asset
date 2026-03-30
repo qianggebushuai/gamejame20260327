@@ -1,15 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a0d2786ba1faa439ff43bd67aca22c, type: 3}
-  m_Name: LightEffect
-  m_EditorClassIdentifier: 
-  targetTag: Player
+version https://git-lfs.github.com/spec/v1
+oid sha256:16549d2ad2f87e3b51d3940db9f3ed8fc59af3cbce1317b6fa95fb8c8f89f01f
+size 435

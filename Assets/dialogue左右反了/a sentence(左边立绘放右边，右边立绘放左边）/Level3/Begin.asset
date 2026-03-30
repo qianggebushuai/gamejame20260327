@@ -1,34 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b066464e5842d7479cf3797148481ff, type: 3}
-  m_Name: Begin
-  m_EditorClassIdentifier: 
-  dialogueId: 13
-  description: "\u5F00\u5C40"
-  npcId: 
-  priority: 0
-  condition:
-    targetNPCId: 
-    minTalkCount: 0
-    maxTalkCount: 2147483647
-    requiredItems: []
-    requiredFlags: []
-    excludeFlags: []
-  actionsOnComplete: []
-  lines:
-  - speakerName: 
-    speakerPortrait: {fileID: 0}
-    leftPortrait: {fileID: 0}
-    rightPortrait: {fileID: 0}
-    activeSide: 0
-    content: "\u201C\u98CE\u6C34\u5DF2\u590D\uFF0C\u7136\u56DB\u65F6\u4F9D\u65E7\u6DF7\u4E71\u3002\u53BB\u70B9\u4EAE\u56DB\u65B9\u796D\u575B\u5427\uFF0C\u8BA9\u6625\u751F\u3001\u590F\u957F\u3001\u79CB\u6536\u3001\u51AC\u85CF\u7684\u6CD5\u5219\uFF0C\u91CD\u65B0\u964D\u4E34\u3002\u201D\r\n"
-    animationTrigger: 
+version https://git-lfs.github.com/spec/v1
+oid sha256:11a16dee58cccca1b484bdc5604fae4b6d7c108e87b8288737e0a6396b33cf7d
+size 1086

@@ -1,21 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50ab53f24a1d9184ba6fe07aaec508f2, type: 3}
-  m_Name: windseed
-  m_EditorClassIdentifier: 
-  itemname: windseed
-  icon: {fileID: 21300000, guid: c9abf2b1b855a81478e0bf49dc1fbf40, type: 3}
-  itemtype: 0
-  itemprefab: {fileID: 7198685564684144755, guid: d478116ea49bb714494fd6f76b9b1d7f, type: 3}
-  canStack: 1
-  maxStackSize: 64
-  itemeffects: []
+version https://git-lfs.github.com/spec/v1
+oid sha256:4df71f05d4b7dcb1e135ec8bc4d30ea7a22b61b0ee118d21ab237bec98413a87
+size 673
